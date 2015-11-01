@@ -1,12 +1,14 @@
 require "json"
 
-class Chat
-  JSON.mapping({
-    id:         Int32,
-    _type:      String,
-    title:      String,
-    username:   String,
-    first_name: String,
-    last_name:  String,
-  })
+module TelegramBot
+  class Chat
+    JSON.mapping({
+      id:         Int32,
+      type:       String,
+      title:      {type: String, nilable: true},
+      username:   {type: String, nilable: true},
+      first_name: {type: String, nilable: true},
+      last_name:  {type: String, nilable: true},
+    })
+  end
 end
