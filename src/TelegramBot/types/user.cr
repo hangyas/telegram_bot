@@ -8,5 +8,6 @@ module TelegramBot
       last_name:  {type: String, nilable: true},
       username:   {type: String, nilable: true},
     })
+    force_getter! username, last_name
   end
 end

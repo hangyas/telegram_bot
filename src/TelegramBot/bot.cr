@@ -1,38 +1,21 @@
 require "http/client"
 require "json"
+require "./helper.cr"
+require "./types/*"
 
 module TelegramBot
-  class Bot
-    def initialize(@token : String)
-      @commands = {} of String => Message ->
+  abstract class Bot
+    abstract def handle(update : Update)
+
+    def initialize(@name : String, @token : String)
       @nextoffset = 0
     end
 
-    def /(command : String, &block : Message ->)
-      @commands[command] = block
-    end
-
-    def cmd(command : String, &block : Message ->)
-      @commands[command] = block
-    end
-
-    def handle(update : Update)
-      if msg = update.message
-        if txt = msg.text
-          if txt[0] == '/'
-            cmd = txt.split(' ')[0][1..-1]
-
-            if cmd.includes? '@'
-              cmd = cmd.split('@')[0]
-            end
-
-            pp cmd
-
-            if proc = @commands[cmd]?
-              msg.text = txt.split(' ')[1..-1].join(" ")
-              proc.call(msg)
-            end
-          end
+    def polling
+      loop do
+        updates = get_updates
+        updates.each do |u|
+          handle u
         end
       end
     end
@@ -59,14 +42,14 @@ module TelegramBot
 
       response = HTTP::Client.post "https://api.telegram.org/bot#{@token}/#{method}", headers, body
 
-      if response.status_code != 200
-        pp response.body
-        return # TODO error msg?
-      end
+      #      if response.status_code != 200
+      # pp response.body
+      #       return # TODO error msg? irunk sajat hiba kodos jsont
+      #    end
 
-      pp response.body
+      #      pp response.body
 
-      json = JSON.parse(response.body) as Hash(String, JSON::Type)
+      json = JSON.parse(response.body) # Hash(String, JSON::Type)
       json["result"]
     end
 
@@ -74,14 +57,8 @@ module TelegramBot
       request "getMe"
     end
 
-    def set_webhook(url)
-      data = request "setWebhook", {"url": url}
-      pp typeof(data)
-    end
-
-    def get_updates(offset = @nextoffset, limit = nil : Int32?, timeout = nil : Int32?)
+    private def get_updates(offset = @nextoffset, limit = nil : Int32?, timeout = nil : Int32?)
       data = request "getUpdates", {"offset": "#{offset}"}
-      data = data as Array
 
       r = [] of Update
       data.each do |json|

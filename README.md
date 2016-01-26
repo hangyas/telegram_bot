@@ -1,36 +1,60 @@
 # TelegramBot
 
-TODO: Write a description here
+Crystal library for Telegram Bot API
+
+## Current features (not so much)
+
+ - text messages
+ - command handler
+ - only long polling supported (webhook planned)
+ - all media messages handled without the file
+
+## Usage
+
+
+```crystal
+class MyBot < TelegramBot::Bot
+  include TelegramBot::CmdHandler
+
+  def initialize
+    super("MyBot", TOKEN)
+
+    cmd "hello" do |msg|
+      reply msg, "world!"
+    end
+  end
+end
+
+my_bot = MyBot.new.polling
+```
+
+or you can write your own handler:
+
+```crystal
+class EchoBot < TelegramBot::Bot
+  def handle(update : Update)
+    msg = update.message!
+    reply msg, msg.text!
+  end
+end
+```
 
 ## Installation
-
 
 Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
   TelegramBot:
-    github: [your-github-name]/TelegramBot
+    github: hangyas/TelegramBot
 ```
 
-
-## Usage
-
-
-```crystal
-require "TelegramBot"
-```
-
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it ( https://github.com/[your-github-name]/TelegramBot/fork )
+__A lot of features is missing so contributing is very welcomed!__
+
+1. Fork it ( https://github.com/hangyas/TelegramBot/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
@@ -38,4 +62,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [[your-github-name]](https://github.com/[your-github-name]) Krisztián Ádám - creator, maintainer
+- [hangyas](https://github.com/hangyas) Krisztián Ádám - creator, maintainer

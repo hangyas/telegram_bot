@@ -4,7 +4,7 @@ module TelegramBot
   class Message
     JSON.mapping({
       message_id:            Int32,
-      from:                  User,
+      from:                  {type: User, nilable: true},
       date:                  Int32,
       chat:                  Chat,
       forward_from:          {type: User, nilable: true},
@@ -25,7 +25,9 @@ module TelegramBot
       new_chat_title:        {type: String, nilable: true},
       new_chat_photo:        {type: Array(PhotoSize), nilable: true},
       delete_chat_photo:     {type: Bool, nilable: true}, # must be true
- group_chat_created:    {type: Bool, nilable: true}       # must be true
+      group_chat_created:    {type: Bool, nilable: true}, # must be true
     })
+
+    force_getter! from, forward_from, forward_date, forward_to_message, text, audio, document, photo, sticker, video, voice, caption, contact, location, new_chat_participant, left_chat_participan, new_chat_title, new_chat_photo, delete_chat_photo, group_chat_created
   end
 end

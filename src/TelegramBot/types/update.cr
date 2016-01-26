@@ -6,5 +6,7 @@ module TelegramBot
       update_id: Int32,
       message:   {type: TelegramBot::Message, nilable: true},
     })
+
+    force_getter! message
   end
 end
