@@ -2,17 +2,19 @@
 
 Crystal library for Telegram Bot API
 
-## Current features (not so much)
+## Current features
 
- - text messages
+ - all messages type
  - command handler
- - only long polling supported (webhook planned)
- - all media messages handled without the file
+ - only long polling supported
+ - inline messages are __not__ supported for now
 
 ## Usage
 
 
 ```crystal
+require "TelegramBot"
+
 class MyBot < TelegramBot::Bot
   include TelegramBot::CmdHandler
 
@@ -25,7 +27,8 @@ class MyBot < TelegramBot::Bot
   end
 end
 
-my_bot = MyBot.new.polling
+my_bot = MyBot.new
+bot.polling
 ```
 
 or you can write your own handler:
@@ -52,7 +55,7 @@ dependencies:
 
 ## Contributing
 
-__A lot of features is missing so contributing is very welcomed!__
+__Contributing is very welcomed!__
 
 1. Fork it ( https://github.com/hangyas/TelegramBot/fork )
 2. Create your feature branch (git checkout -b my-new-feature)

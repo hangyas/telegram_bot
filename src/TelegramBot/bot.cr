@@ -3,6 +3,8 @@ require "json"
 require "./helper.cr"
 require "./types/*"
 
+require "./http_client_mulipart.cr"
+
 module TelegramBot
   abstract class Bot
     abstract def handle(update : Update)
@@ -12,36 +14,32 @@ module TelegramBot
     end
 
     def polling
-      loop do
-        updates = get_updates
-        updates.each do |u|
-          handle u
-        end
+      #      loop do
+      updates = get_updates
+      updates.each do |u|
+        handle u
       end
+      #      end
     end
 
-    private def request(method : String, params = {} of String => String, file = nil : File?)
-      params.delete_if do |k, v|
-        v.nil?
-      end
-
+    private def request(method : String, params = {} of String => String)
       headers = HTTP::Headers.new
-      #      params.each do |k, v|
-      #       headers[k] = v.to_s
-      #    end
 
-      body = nil
+      parts = HTTP::Client::MultipartBody.new
 
-      if file # TODO test
-        headers["Content-Type"] = "multipart/form-data"
-        body = file
-      else
-        headers["Content-Type"] = "application/json"
-        body = params.to_json
+      params.each do |k, v|
+        if v.nil?
+          next
+        end
+        if v.is_a?(::File)
+          parts.add_file(k, v)
+        else
+          parts.add_part(k, v.to_s)
+        end
       end
 
-      response = HTTP::Client.post "https://api.telegram.org/bot#{@token}/#{method}", headers, body
-
+      response = HTTP::Client.post_multipart "https://api.telegram.org/bot#{@token}/#{method}", headers, parts
+      pp response
       #      if response.status_code != 200
       # pp response.body
       #       return # TODO error msg? irunk sajat hiba kodos jsont
@@ -86,8 +84,6 @@ module TelegramBot
         "reply_to_message_id": reply_to_message_id,
         "reply_markup":        reply_markup,
       }
-
-      #     pp {{params}}
     end
 
     def reply(message : Message, text : String)
@@ -97,15 +93,27 @@ module TelegramBot
     def forward_message(chat_id : Int32 | String, from_chat_id : Int32 | String, message_id : Int32)
     end
 
-    # TODO file feltoltes
-    def send_photo(chat_id : Int32 | String, photo : String, caption : String?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil)
+    def send_photo(chat_id : Int32 | String, photo = nil : ::File?, caption = nil : String?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil)
+      request "sendPhoto", {
+        "chat_id":             chat_id,
+        "photo":               photo,
+        "reply_to_message_id": reply_to_message_id,
+        "reply_markup":        reply_markup,
+      }
     end
 
-    # TODO file
-    def send_audio(chat_id : Int32 | String, audio : String, duration = nil : Int32?, performer = nil : String?, title = nil : String?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil)
+    def send_audio(chat_id : Int32 | String, audio : ::File, duration = nil : Int32?, performer = nil : String?, title = nil : String?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil)
+      request "sendPhoto", {
+        "chat_id":             chat_id,
+        "audio":               audio,
+        "duration":            duration,
+        "performer":           performer,
+        "title":               title,
+        "reply_to_message_id": reply_to_message_id,
+        "reply_markup":        reply_markup,
+      }
     end
 
-    # TODO from file
     def send_document(chat_id : Int32 | String, document : String, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil)
     end
 
