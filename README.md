@@ -4,10 +4,10 @@
 
 ## Current features
 
- [x] all messages type
- [x] command handler
- [x] long polling
- [x] inline queries
+ - [x] all messages type
+ - [x] command handler
+ - [x] long polling
+ - [x] inline queries
 
 ## Usage
 
