@@ -5,7 +5,11 @@ module TelegramBot
     # TODO toJSON
     JSON.mapping({
       hide_keyboard: Boolean, # TODO must be true
- selective:     {type: Boolean, nilable: true},
+      selective:     {type: Boolean, nilable: true},
     })
+  end
+
+  def initialize
+    @hide_keyboard = true
   end
 end

@@ -3,12 +3,12 @@ require "http/client"
 class HTTP::Client
   def self.post_multipart(url : String | URI, headers : HTTP::Headers, parts = MultipartBody) : HTTP::Client::Response
     headers["Content-Type"] = "multipart/form-data; boundary=#{parts.boundary}"
-    #    r = Request.new "POST", url, headers, parts.bodyg
-    #   r.to_io(STDOUT)
+    # r = Request.new "POST", url, headers, parts.bodyg
+    # r.to_io(STDOUT)
     post url, headers, parts.bodyg
   end
 
-  # simple represation of multipart/from-data (works for now)
+  # ugly represation of multipart/from-data (works for now)
   class MultipartBody
     getter boundary
 

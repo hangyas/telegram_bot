@@ -1,13 +1,13 @@
 # TelegramBot
 
-Crystal library for Telegram Bot API
+[Telegram Bot API](https://core.telegram.org/bots/api) wrapper for Crystal
 
 ## Current features
 
- - all messages type
- - command handler
- - only long polling supported
- - inline messages are __not__ supported for now
+ [x] all messages type
+ [x] command handler
+ [x] long polling
+ [x] inline queries
 
 ## Usage
 
@@ -38,6 +38,18 @@ class EchoBot < TelegramBot::Bot
   def handle(update : Update)
     msg = update.message!
     reply msg, msg.text!
+  end
+end
+```
+
+inline querys:
+
+```crystal
+class InlineBot < TelegramBot::Bot
+  def handle(inline_query : TelegramBot::InlineQuery)
+    results = Array(TelegramBot::InlineQueryResult).new
+    results << TelegramBot::InlineQueryResultArticle.new(id, tittle, msg) 
+    answer_inline_query(inline_query.id, results)
   end
 end
 ```

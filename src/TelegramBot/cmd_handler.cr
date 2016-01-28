@@ -12,8 +12,8 @@ module TelegramBot
       @commands[command] = block
     end
 
-    def handle(update : Update)
-      txt = update.message!.text!
+    def handle(message : Message)
+      txt = message.text!
       if txt[0] == '/'
         #            tt = msg.text!
         cmd = txt.split(' ')[0][1..-1]
@@ -32,8 +32,8 @@ module TelegramBot
         pp cmd
 
         if proc = @commands[cmd]?
-          update.message!.text = txt.split(' ')[1..-1].join(" ")
-          proc.call(update.message!)
+          message.text = txt.split(' ')[1..-1].join(" ")
+          proc.call(message)
         end
       end
     rescue
