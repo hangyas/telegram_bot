@@ -42,13 +42,13 @@ class EchoBot < TelegramBot::Bot
 end
 ```
 
-inline querys:
+inline queries:
 
 ```crystal
 class InlineBot < TelegramBot::Bot
   def handle(inline_query : TelegramBot::InlineQuery)
     results = Array(TelegramBot::InlineQueryResult).new
-    results << TelegramBot::InlineQueryResultArticle.new(id, tittle, msg) 
+    results << TelegramBot::InlineQueryResultArticle.new(id, title, msg) 
     answer_inline_query(inline_query.id, results)
   end
 end
