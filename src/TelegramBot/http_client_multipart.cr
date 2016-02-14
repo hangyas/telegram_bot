@@ -3,8 +3,10 @@ require "http/client"
 class HTTP::Client
   def self.post_multipart(url : String | URI, headers : HTTP::Headers, parts = MultipartBody) : HTTP::Client::Response
     headers["Content-Type"] = "multipart/form-data; boundary=#{parts.boundary}"
+    # if !url.includes?("getUpdate")
     # r = Request.new "POST", url, headers, parts.bodyg
     # r.to_io(STDOUT)
+    # end
     post url, headers, parts.bodyg
   end
 

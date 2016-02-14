@@ -12,10 +12,18 @@ module TelegramBot
       @commands[command] = block
     end
 
+    def call(cmd : String, message : Message)
+      if proc = @commands[cmd]?
+        if txt = message.text
+          message.text = txt.split(' ')[1..-1].join(" ")
+          proc.call(message)
+        end
+      end
+    end
+
     def handle(message : Message)
       txt = message.text!
       if txt[0] == '/'
-        #            tt = msg.text!
         cmd = txt.split(' ')[0][1..-1]
 
         if cmd.includes? '@'
@@ -31,12 +39,11 @@ module TelegramBot
 
         pp cmd
 
-        if proc = @commands[cmd]?
-          message.text = txt.split(' ')[1..-1].join(" ")
-          proc.call(message)
-        end
+        call cmd, message
       end
-    rescue
+    rescue e
+      puts "ERROR"
+      pp e.message
       # can't handle this
     end
   end
