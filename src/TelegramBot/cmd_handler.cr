@@ -14,7 +14,7 @@ module TelegramBot
 
     def call(cmd : String, message : Message)
       if proc = @commands[cmd]?
-        if txt = message.text
+        if txt = message.text || message.caption
           message.text = txt.split(' ')[1..-1].join(" ")
           proc.call(message)
         end
@@ -22,24 +22,27 @@ module TelegramBot
     end
 
     def handle(message : Message)
-      txt = message.text!
-      if txt[0] == '/'
-        cmd = txt.split(' ')[0][1..-1]
+      if txt = message.text || message.caption
+        if txt[0] == '/'
+          cmd = txt.split(' ')[0][1..-1]
 
-        if cmd.includes? '@'
-          parts = cmd.split('@')
+          if cmd.includes? '@'
+            parts = cmd.split('@')
 
-          if parts[1].upcase != @name.upcase
-            # not for us
-            return
+            if parts[1].upcase != @name.upcase
+              # not for us
+              return
+            end
+
+            cmd = parts[0]
           end
 
-          cmd = parts[0]
+          pp cmd
+
+          call cmd, message
         end
-
-        pp cmd
-
-        call cmd, message
+      else
+        puts message.to_json
       end
     rescue e
       puts "ERROR"
