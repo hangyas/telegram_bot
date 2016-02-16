@@ -147,7 +147,7 @@ module TelegramBot
     def answer_inline_query(inline_query_id : String, result_array : Array(InlineQueryResult), cache_time = nil : Int32?, is_personal = nil : Boolean?, next_offset = nil : String?) : Bool
       # results   Array of InlineQueryResult  Yes   A JSON-serialized array of results for the inline query
       results = "[" + result_array.join(", ") { |a| a.to_json } + "]"
-      res = def_request "answerInlineQuery", inline_query_id, results, cache_time, is_personal, next_offset
+      res = def_request "answerInlineQuery", inline_query_id, cache_time, is_personal, next_offset, results
 
       if res.is_a?(Bool)
         return res
