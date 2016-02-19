@@ -4,8 +4,8 @@ module TelegramBot
   class ReplyKeyboardHide
     # TODO toJSON
     JSON.mapping({
-      hide_keyboard: Boolean, # TODO must be true
-      selective:     {type: Boolean, nilable: true},
+      hide_keyboard: Bool, # TODO must be true
+      selective:     {type: Bool, nilable: true},
     })
   end
 

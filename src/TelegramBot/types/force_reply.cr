@@ -3,8 +3,8 @@ require "json"
 module TelegramBot
   class ForceReply
     JSON.mapping({
-      force_reply: Boolean, # TODO must be true
- selective:   {type: Boolean, nilable: true},
+      force_reply: Bool, # TODO must be true
+      selective:   {type: Bool, nilable: true},
     })
 
     def initialize

@@ -13,7 +13,7 @@ module TelegramBot
       caption:                  {type: String, nilable: true},
       message_text:             {type: String, nilable: true},
       parse_mode:               {type: String, nilable: true},
-      disable_web_page_preview: {type: Boolean, nilable: true},
+      disable_web_page_preview: {type: Bool, nilable: true},
     })
 
     def initialize(@id : String, @mpeg4_url : String, @thumb_url : String)

@@ -15,7 +15,7 @@ module TelegramBot
     def handle(inline_query : ChoosenInlineResult)
     end
 
-    def initialize(@name : String, @token : String)
+    def initialize(@name : String, @token : String, @private_mode = false : Bool, @users = [] of String)
       @nextoffset = 0
     end
 
@@ -24,13 +24,22 @@ module TelegramBot
         updates = get_updates
         updates.each do |u|
           if msg = u.message
+            if @private_mode && !@users.includes? msg.from!.username!
+              next
+            end
             handle msg
             if msg.text
               p msg.text
             end
           elsif query = u.inline_query
+            if @private_mode && !@users.includes? query.from.username!
+              next
+            end
             handle query
           elsif choosen = u.choosen_inline_result
+            if @private_mode && !@users.includes? choosen.from.username!
+              next
+            end
             handle choosen
           end
         end
@@ -95,7 +104,7 @@ module TelegramBot
         }
     end
 
-    def send_message(chat_id : Int32 | String, text : String, parse_mode = nil : String?, disable_web_view = nil : Boolean?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil) : Message
+    def send_message(chat_id : Int32 | String, text : String, parse_mode = nil : String?, disable_web_view = nil : Bool?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil) : Message
       res = def_request "sendMessage", chat_id, text, parse_mode, disable_web_view, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -144,16 +153,12 @@ module TelegramBot
       Message.from_json res.to_json
     end
 
-    def answer_inline_query(inline_query_id : String, result_array : Array(InlineQueryResult), cache_time = nil : Int32?, is_personal = nil : Boolean?, next_offset = nil : String?) : Bool
+    def answer_inline_query(inline_query_id : String, result_array : Array(InlineQueryResult), cache_time = nil : Int32?, is_personal = nil : Bool?, next_offset = nil : String?) : Bool
       # results   Array of InlineQueryResult  Yes   A JSON-serialized array of results for the inline query
       results = "[" + result_array.join(", ") { |a| a.to_json } + "]"
       res = def_request "answerInlineQuery", inline_query_id, cache_time, is_personal, next_offset, results
 
-      if res.is_a?(Bool)
-        return res
-      else
-        return false
-      end
+      return res.as_bool
     end
 
     def get_file(file_id : String) : File

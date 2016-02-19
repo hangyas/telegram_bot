@@ -9,7 +9,7 @@ module TelegramBot
       mime_type:                String,
       message_text:             String,
       parse_mode:               {type: String, nilable: true},
-      disable_web_page_preview: {type: Boolean, nilable: true},
+      disable_web_page_preview: {type: Bool, nilable: true},
       video_width:              {type: Int32, nilable: true},
       video_height:             {type: Int32, nilable: true},
       video_duration:           {type: Int32, nilable: true},
