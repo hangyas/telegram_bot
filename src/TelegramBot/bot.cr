@@ -104,8 +104,8 @@ module TelegramBot
         }
     end
 
-    def send_message(chat_id : Int32 | String, text : String, parse_mode = nil : String?, disable_web_view = nil : Bool?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil) : Message
-      res = def_request "sendMessage", chat_id, text, parse_mode, disable_web_view, reply_to_message_id, reply_markup
+    def send_message(chat_id : Int32 | String, text : String, parse_mode = nil : String?, disable_web_page_preview = nil : Bool?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil) : Message
+      res = def_request "sendMessage", chat_id, text, parse_mode, disable_web_page_preview, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
 
@@ -118,6 +118,7 @@ module TelegramBot
       Message.from_json res.to_json
     end
 
+    # photo file or file id
     def send_photo(chat_id : Int32 | String, photo : ::File | String, caption = nil : String?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil)
       res = def_request "sendPhoto", chat_id, photo, reply_to_message_id, reply_markup
       Message.from_json res.to_json
