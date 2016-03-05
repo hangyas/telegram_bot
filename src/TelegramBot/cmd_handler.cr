@@ -21,7 +21,7 @@ module TelegramBot
       end
     end
 
-    def handle(message : Message)
+    def handle(message : Message) : Bool
       if txt = message.text || message.caption
         if txt[0] == '/'
           cmd = txt.split(' ')[0][1..-1]
@@ -31,7 +31,7 @@ module TelegramBot
 
             if parts[1].upcase != @name.upcase
               # not for us
-              return
+              return false
             end
 
             cmd = parts[0]
@@ -40,14 +40,19 @@ module TelegramBot
           pp cmd
 
           call cmd, message
+          return true
+        else
+          return false
         end
       else
         puts message.to_json
+        return false
       end
     rescue e
       puts "ERROR"
       pp e.message
       # can't handle this
+      return false
     end
   end
 end

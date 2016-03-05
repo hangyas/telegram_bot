@@ -8,5 +8,8 @@ module TelegramBot
       one_time_keyboard: {type: Bool, nilable: true},
       selective:         {type: Bool, nilable: true},
     })
+
+    def initialize(@keyboard)
+    end
   end
 end

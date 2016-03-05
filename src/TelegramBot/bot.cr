@@ -105,7 +105,11 @@ module TelegramBot
     end
 
     def send_message(chat_id : Int32 | String, text : String, parse_mode = nil : String?, disable_web_page_preview = nil : Bool?, reply_to_message_id = nil : Int32?, reply_markup = nil : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil) : Message
+      if reply_markup
+        reply_markup = reply_markup.to_json
+      end
       res = def_request "sendMessage", chat_id, text, parse_mode, disable_web_page_preview, reply_to_message_id, reply_markup
+      # puts res.to_json
       Message.from_json res.to_json
     end
 
