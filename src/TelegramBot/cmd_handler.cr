@@ -38,7 +38,6 @@ module TelegramBot
           end
 
           pp cmd
-
           call cmd, message
           return true
         else
