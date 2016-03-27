@@ -23,7 +23,7 @@ class HTTP::Client
       @body = ""
     end
 
-    def add_part(name : String, content : String, mime_type = "text/plain" : String)
+    def add_part(name : String, content : String, mime_type : String = "text/plain")
       @body += "--" + @boundary + "\r\n"
       @body += "Content-Disposition: form-data; name=\"#{name}\"\r\n"
       if mime_type
@@ -32,7 +32,7 @@ class HTTP::Client
       @body += "\r\n" + content + "\r\n"
     end
 
-    def add_file(name : String, file : ::File, mime_type = "" : String)
+    def add_file(name : String, file : ::File, mime_type : String = "")
       @body += "\r\n--" + @boundary + "\r\n"
       @body += "Content-Disposition: form-data; name=\"#{name}\"; filename=\"#{file.path}\"\r\n"
       if mime_type

@@ -30,7 +30,7 @@ module TelegramBot
       @nextoffset = 0
     end
 
-    # run long polling in a loop
+    # run long polling in a loop and call handlers for messages
     # on the current thread!
     def polling
       loop do
