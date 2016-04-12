@@ -1,0 +1,714 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"com",
+				"complete"
+			],
+			[
+				"desk",
+				"desktop_files"
+			],
+			[
+				"deks",
+				"desktop_files"
+			],
+			[
+				"time",
+				"time_str"
+			],
+			[
+				"aler",
+				"alerts"
+			],
+			[
+				"da",
+				"day_of_year"
+			],
+			[
+				"chec",
+				"check_daily"
+			],
+			[
+				"eac",
+				"each"
+			],
+			[
+				"gaps",
+				"gapsn"
+			],
+			[
+				"na",
+				"ngaps"
+			],
+			[
+				"sear",
+				"search_in_str"
+			],
+			[
+				"sera",
+				"search"
+			],
+			[
+				"rand",
+				"Random"
+			],
+			[
+				"priv",
+				"private_mode"
+			],
+			[
+				"header",
+				"headercanvas"
+			],
+			[
+				"font",
+				"font-style"
+			],
+			[
+				"list",
+				"list-style-type"
+			],
+			[
+				"load",
+				"loadtext"
+			],
+			[
+				"penis",
+				"penisimg"
+			],
+			[
+				"video",
+				"video_url"
+			],
+			[
+				"mpe",
+				"mpeg4_url"
+			],
+			[
+				"gif",
+				"gif_url"
+			],
+			[
+				"rest",
+				"restul_array"
+			],
+			[
+				"photo",
+				"photo_url"
+			],
+			[
+				"res",
+				"restul_array"
+			],
+			[
+				"ansr",
+				"answer_inline_query"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"inline",
+				"inline_query"
+			],
+			[
+				"ch",
+				"choosen"
+			],
+			[
+				"bo",
+				"boundary"
+			],
+			[
+				"mi",
+				"mime_type"
+			],
+			[
+				"ini",
+				"initialize_handler"
+			],
+			[
+				"json",
+				"json_data"
+			],
+			[
+				"chat",
+				"chat_id"
+			],
+			[
+				"last",
+				"last_alert"
+			],
+			[
+				"nam",
+				"names2"
+			],
+			[
+				"n",
+				"names2"
+			],
+			[
+				"repl",
+				"reply_to_message_id"
+			],
+			[
+				"re",
+				"reply_markup"
+			],
+			[
+				"reply_",
+				"reply_to_message_id"
+			],
+			[
+				"co",
+				"comperator"
+			],
+			[
+				"sift",
+				"siftDown"
+			],
+			[
+				"sif",
+				"siftDown"
+			],
+			[
+				"par",
+				"parent"
+			],
+			[
+				"si",
+				"size"
+			],
+			[
+				"initi",
+				"initial_capacity"
+			],
+			[
+				"encod",
+				"encode64sss"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "http_client_multipart.cr",
+			"settings":
+			{
+				"buffer_size": 1572,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/hangyas/prog/TelegramBot/telegrambot.sublime-project",
+			"settings":
+			{
+				"buffer_size": 74,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 354.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"ss css",
+				"Set Syntax: CSS"
+			],
+			[
+				"pck remove ",
+				"Package Control: Remove Package"
+			],
+			[
+				"format html",
+				"CodeFormatter: Format as HTML Syntax"
+			],
+			[
+				"format css",
+				"CodeFormatter: Format as CSS Syntax"
+			],
+			[
+				"format",
+				"CodeFormatter: Format as HTML Syntax"
+			],
+			[
+				"ss cr",
+				"Set Syntax: Crystal"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"ss json",
+				"Set Syntax: JSON"
+			],
+			[
+				"pack instal",
+				"Package Control: Install Package"
+			],
+			[
+				"foarmat",
+				"CodeFormatter: Format Code"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"hex",
+				"Hex Viewer: Toggle Hex View"
+			],
+			[
+				"ss c",
+				"Set Syntax: C"
+			],
+			[
+				"ss ruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"package insta",
+				"Package Control: Install Package"
+			],
+			[
+				"packag up",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"ss c++",
+				"Set Syntax: C++"
+			],
+			[
+				"ss ",
+				"Set Syntax: Crystal"
+			],
+			[
+				"pckg insta",
+				"Package Control: Install Package"
+			],
+			[
+				"ss java",
+				"Set Syntax: Java"
+			],
+			[
+				"ss make",
+				"Set Syntax: Makefile"
+			],
+			[
+				"ss bash",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"ss sc",
+				"Set Syntax: Scala"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"ss mark",
+				"Set Syntax: Markdown"
+			],
+			[
+				"ss mdow",
+				"Set Syntax: Markdown"
+			],
+			[
+				"ss js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"isntall",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 454.0
+	},
+	"console":
+	{
+		"height": 160.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/hangyas/prog/TelegramBot",
+		"/home/hangyas/prog/TelegramBot/src",
+		"/home/hangyas/prog/TelegramBot/src/TelegramBot"
+	],
+	"file_history":
+	[
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"help",
+			"check_alerts",
+			"daily",
+			"post_daily",
+			"web",
+			"send_messa",
+			"send",
+			"0",
+			"last_alerts",
+			"last_alert",
+			"cmd",
+			"query",
+			"Boolean",
+			"---",
+			"h_rry",
+			"job",
+			"array",
+			"sdf",
+			"FOGLALOLISTACIKLUS",
+			"status",
+			"58",
+			"allow all",
+			"http_port",
+			"port",
+			"http_port ",
+			"http_port 28",
+			"visible_hostname",
+			"http_access allo",
+			"http_port",
+			"http",
+			"first",
+			"gc",
+			"load",
+			"2",
+			"wave",
+			"hullam",
+			"deviceId",
+			"\"#",
+			"colors",
+			"\"v\"",
+			"State",
+			"State *",
+			"stack",
+			"status",
+			"Status",
+			"vm."
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Bool",
+			"front",
+			">",
+			"state",
+			"State",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "http_client_multipart.cr",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1572,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								365,
+								365
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Crystal/Crystal.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/hangyas/prog/TelegramBot/telegrambot.sublime-project",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 74,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								73,
+								73
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.crystal_errors":
+	{
+		"height": 100.0
+	},
+	"output.exec":
+	{
+		"height": 205.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.hex_viewer_inspector":
+	{
+		"height": 112.0
+	},
+	"pinned_build_system": "",
+	"project": "telegrambot.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"aler",
+				"src/HabzsiBot/alert.cr"
+			],
+			[
+				"tes",
+				"src/test.cr"
+			],
+			[
+				"time",
+				"src/HabzsiBot/time_handler.cr"
+			],
+			[
+				"hab",
+				"src/habzsibot.cr"
+			],
+			[
+				"bot",
+				"libs/TelegramBot/TelegramBot/bot.cr"
+			],
+			[
+				"alert",
+				"src/HabzsiBot/alert.cr"
+			],
+			[
+				"test",
+				"src/test.cr"
+			],
+			[
+				"mess",
+				"libs/TelegramBot/TelegramBot/types/message.cr"
+			],
+			[
+				"cmd",
+				"libs/TelegramBot/TelegramBot/cmd_handler.cr"
+			],
+			[
+				"upda",
+				"update.sh"
+			],
+			[
+				"habzs",
+				"habzsibot.sh"
+			],
+			[
+				"readme",
+				"readme.txt"
+			],
+			[
+				"hel",
+				"~/d/help.txt"
+			],
+			[
+				"hide",
+				"libs/TelegramBot/TelegramBot/types/reply_keyboard_hide.cr"
+			],
+			[
+				"cmdh",
+				"libs/TelegramBot/TelegramBot/cmd_handler.cr"
+			],
+			[
+				"force",
+				"libs/TelegramBot/TelegramBot/types/force_reply.cr"
+			],
+			[
+				"choo",
+				"libs/TelegramBot/TelegramBot/types/choosen_inline_result.cr"
+			],
+			[
+				"inl",
+				"libs/TelegramBot/TelegramBot/types/inline_query.cr"
+			],
+			[
+				"gitig",
+				".gitignore"
+			],
+			[
+				"hb",
+				"habzsibot.md"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/prog/hangyas.github.io/hangyas.github.io.sublime-project"
+			],
+			[
+				"han",
+				"~/prog/hangyas.github.io/hangyas.github.io.sublime-project"
+			],
+			[
+				"hangy",
+				"~/prog/hangyas.github.io/hangyas.github.io.sublime-project"
+			],
+			[
+				"bny",
+				"~/prog/bnybot/bnybot.sublime-project"
+			],
+			[
+				"hab",
+				"~/prog/habzsibot/habzsibot.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 250.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

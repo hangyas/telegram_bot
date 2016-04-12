@@ -1,6 +1,7 @@
 require "http/client"
 require "json"
 require "./helper.cr"
+require "./types/inline/*"
 require "./types/*"
 
 require "./http_client_multipart.cr"
@@ -121,11 +122,17 @@ module TelegramBot
         }
     end
 
-    def send_message(chat_id : Int32 | String, text : String, parse_mode : String? = nil, disable_web_page_preview : Bool? = nil, reply_to_message_id : Int32? = nil, reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil) : Message
+    def send_message(chat_id : Int32 | String,
+                     text : String,
+                     parse_mode : String? = nil,
+                     disable_web_page_preview : Bool? = nil,
+                     disable_notification : Bool? = nil,
+                     reply_to_message_id : Int32? = nil,
+                     reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil) : Message
       if reply_markup
         reply_markup = reply_markup.to_json
       end
-      res = def_request "sendMessage", chat_id, text, parse_mode, disable_web_page_preview, reply_to_message_id, reply_markup
+      res = def_request "sendMessage", chat_id, text, parse_mode, disable_notification, disable_web_page_preview, reply_to_message_id, reply_markup
       # puts res.to_json
       Message.from_json res.to_json
     end
@@ -134,51 +141,181 @@ module TelegramBot
       send_message(message.chat.id, text, reply_to_message_id: message.message_id)
     end
 
-    def forward_message(chat_id : Int32 | String, from_chat_id : Int32 | String, message_id : Int32)
-      res = def_request "forwardMessage", chat_id, from_chat_id, message_id
+    def forward_message(chat_id : Int32 | String, from_chat_id : Int32 | String, message_id : Int32, disable_notification : Bool? = nil)
+      res = def_request "forwardMessage", chat_id, from_chat_id, message_id, disable_notification
       Message.from_json res.to_json
     end
 
     # photo file or file id
-    def send_photo(chat_id : Int32 | String, photo : ::File | String, caption : String? = nil, reply_to_message_id : Int32? = nil, reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
-      res = def_request "sendPhoto", chat_id, photo, reply_to_message_id, reply_markup
+    def send_photo(chat_id : Int32 | String,
+                   photo : ::File | String,
+                   caption : String? = nil,
+                   disable_notification : Bool? = nil,
+                   reply_to_message_id : Int32? = nil,
+                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendPhoto", chat_id, photo, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
 
-    def send_audio(chat_id : Int32 | String, audio : ::File | String, duration : Int32? = nil, performer : String? = nil, title : String? = nil, reply_to_message_id : Int32? = nil, reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
-      res = def_request "sendPhoto", chat_id, audio, duration, performer, title, reply_to_message_id, reply_markup
+    def send_audio(chat_id : Int32 | String,
+                   audio : ::File | String,
+                   duration : Int32? = nil,
+                   performer : String? = nil,
+                   title : String? = nil,
+                   disable_notification : Bool? = nil,
+                   reply_to_message_id : Int32? = nil,
+                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendPhoto", chat_id, audio, duration, performer, title, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
 
-    def send_document(chat_id : Int32 | String, document : ::File | String, reply_to_message_id : Int32? = nil, reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
-      res = def_request "sendDocument", chat_id, document, reply_to_message_id, reply_markup
+    def send_document(chat_id : Int32 | String,
+                      document : ::File | String,
+                      caption : String? = nil,
+                      disable_notification : Bool? = nil,
+                      reply_to_message_id : Int32? = nil,
+                      reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendDocument", chat_id, document, caption, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
 
-    def send_sticker(chat_id : Int32 | String, sticker : ::File | String, reply_to_message_id : Int32? = nil, reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
-      res = def_request "sendSticker", chat_id, sticker, reply_to_message_id, reply_markup
+    def send_sticker(chat_id : Int32 | String,
+                     sticker : ::File | String,
+                     disable_notification : Bool? = nil,
+                     reply_to_message_id : Int32? = nil,
+                     reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendSticker", chat_id, sticker, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
 
-    def send_video(chat_id : Int32 | String, video : ::File | String, duration : Int32? = nil, caption : String? = nil, reply_to_message_id : Int32? = nil, reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
-      res = def_request "sendVideo", chat_id, video, duration, caption, reply_to_message_id, reply_markup
+    def send_video(chat_id : Int32 | String,
+                   video : ::File | String,
+                   duration : Int32? = nil,
+                   width : Int32? = nil,
+                   height : Int32? = nil,
+                   caption : String? = nil,
+                   disable_notification : Bool? = nil,
+                   reply_to_message_id : Int32? = nil,
+                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendVideo", chat_id, video, duration, width, height, disable_notification, caption, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
 
-    def send_voice(chat_id : Int32 | String, voice : ::File | String, duration : Int32? = nil, reply_to_message_id : Int32? = nil, reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
-      res = def_request "sendVoice", chat_id, voice, duration, reply_to_message_id, reply_markup
+    def send_voice(chat_id : Int32 | String,
+                   voice : ::File | String,
+                   duration : Int32? = nil,
+                   disable_notification : Bool? = nil,
+                   reply_to_message_id : Int32? = nil,
+                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendVoice", chat_id, voice, duration, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
 
-    def send_location(chat_id : Int32 | String, latitude : Float, longitude : Float, reply_to_message_id : Int32? = nil, reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
-      res = def_request "sendLocation", chat_id, latitude, longitude, reply_to_message_id, reply_markup
+    def send_location(chat_id : Int32 | String,
+                      latitude : Float,
+                      longitude : Float,
+                      disable_notification : Bool? = nil,
+                      reply_to_message_id : Int32? = nil,
+                      reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendLocation", chat_id, latitude, longitude, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
 
-    def answer_inline_query(inline_query_id : String, result_array : Array(InlineQueryResult), cache_time : Int32? = nil, is_personal : Bool? = nil, next_offset : String? = nil) : Bool
+    def send_venue(chat_id : Int32 | String,
+                   latitude : Float,
+                   longitude : Float,
+                   title : String,
+                   address : String,
+                   forsquare_id : String? = nil,
+                   disable_notification : Bool? = nil,
+                   reply_to_message_id : Int32? = nil,
+                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendVenue", chat_id, latitude, longitude, title, address, forsquare_id, disable_notification, reply_to_message_id, reply_markup
+      Message.from_json res.to_json
+    end
+
+    def send_contact(chat_id : Int32 | String,
+                     phone_number : String,
+                     first_name : String,
+                     last_name : String? = nil,
+                     reply_to_message_id : Int32? = nil,
+                     reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+      res = def_request "sendContact", chat_id, phone_number, first_name, last_name, disable_notification, reply_to_message_id, reply_markup
+      Message.from_json res.to_json
+    end
+
+    def send_chat_action(chat_id : Int32 | String,
+                         action : String)
+      res = def_request "sendChatAction", chat_id, action
+    end
+
+    def get_user_profile_photos(user_id : Int32,
+                                offset : Int32? = nil,
+                                limit : Int32? = nil)
+      res = def_request "getUserProfilePhotos", user_id, offset, limit
+      UserProfilePhotos.from_json res.to_json
+    end
+
+    def kick_chat_member(chat_id : Int32 | String,
+                         user_id : Int32)
+      res = def_request "kickChatMember", chat_id, user_id
+      res.as_bool
+    end
+
+    def unban_chat_member(chat_id : Int32 | String,
+                          user_id : Int32)
+      res = def_request "unbanChatMember", chat_id, user_id
+      res.as_bool
+    end
+
+    def answer_callback_query(callback_query_id : String,
+                              text : String? = nil,
+                              show_alert : Bool? = nil)
+      res = def_request "answerCallbackQuery", callback_query_id, text, show_alert
+      res.as_bool
+    end
+
+    def edit_message_text(chat_id : Int32 | String | Nil = nil,
+                          message_id : Int32? = nil,
+                          inline_message_id : String = nil,
+                          text : String? = nil,
+                          parse_mode : String? = nil,
+                          disable_web_page_preview : Bool? = nil,
+                          reply_markup : InlineKeyboardMarkup? = nil)
+      reply_markup = reply_markup.to_json
+      res = def_request "editMessageText", chat_id, message_id, inline_message_id, text, parse_mode, disable_web_page_preview, reply_markup
+      Message.from_json res.to_json
+    end
+
+    def edit_message_caption(chat_id : Int32 | String | Nil = nil,
+                             message_id : Int32? = nil,
+                             inline_message_id : String = nil,
+                             caption : String? = nil,
+                             reply_markup : InlineKeyboardMarkup? = nil)
+      reply_markup = reply_markup.to_json
+      res = def_request "editMessageCaption", chat_id, message_id, inline_message_id, caption, reply_markup
+      Message.from_json res.to_json
+    end
+
+    def edit_message_reply_markup(chat_id : Int32 | String | Nil = nil,
+                                  message_id : Int32? = nil,
+                                  inline_message_id : String = nil,
+                                  reply_markup : InlineKeyboardMarkup? = nil)
+      reply_markup = reply_markup.to_json
+      res = def_request "editMessageCaption", chat_id, message_id, inline_message_id, reply_markup
+      Message.from_json res.to_json
+    end
+
+    def answer_inline_query(inline_query_id : String,
+                            results : Array(InlineQueryResult),
+                            cache_time : Int32? = nil,
+                            is_personal : Bool? = nil,
+                            next_offset : String? = nil,
+                            switch_pm_text : String? = nil,
+                            switch_pm_parameter : Strin? = nil) : Bool
       # results   Array of InlineQueryResult  Yes   A JSON-serialized array of results for the inline query
-      results = "[" + result_array.join(", ") { |a| a.to_json } + "]"
-      res = def_request "answerInlineQuery", inline_query_id, cache_time, is_personal, next_offset, results
+      results = "[" + results.join(", ") { |a| a.to_json } + "]"
+      res = def_request "answerInlineQuery", inline_query_id, cache_time, is_personal, next_offset, results, switch_pm_text, switch_pm_parameter
 
       return res.as_bool
     end
