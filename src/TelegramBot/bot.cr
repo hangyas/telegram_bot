@@ -23,6 +23,10 @@ module TelegramBot
     def handle(inline_query : ChoosenInlineResult)
     end
 
+    # handle callback query
+    def handle(inline_query : CallbackQuery)
+    end
+
     # @name name of the bot (not rely used yet)
     # @token
     # @private_mode if true the bot will handle request sent by users from @users
@@ -56,6 +60,11 @@ module TelegramBot
                 next
               end
               handle choosen
+            elsif callback_query = u.callback_query
+              if @private_mode && !@users.includes? choosen.from.username!
+                next
+              end
+              handle callback_query
             end
           end
         rescue ex
