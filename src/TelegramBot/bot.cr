@@ -61,7 +61,7 @@ module TelegramBot
               end
               handle choosen
             elsif callback_query = u.callback_query
-              if @private_mode && !@users.includes? choosen.from.username!
+              if @private_mode && !@users.includes? callback_query.from.username!
                 next
               end
               handle callback_query
