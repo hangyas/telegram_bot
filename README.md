@@ -11,6 +11,7 @@
 
 ## Usage
 
+respond `world` to `/hello`
 
 ```crystal
 require "TelegramBot"
