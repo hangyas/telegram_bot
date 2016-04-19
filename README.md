@@ -29,7 +29,7 @@ class MyBot < TelegramBot::Bot
 end
 
 my_bot = MyBot.new
-bot.polling
+my_bot.polling
 ```
 
 or you can write your own handler:
