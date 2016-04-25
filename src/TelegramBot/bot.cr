@@ -29,9 +29,10 @@ module TelegramBot
 
     # @name name of the bot (not rely used yet)
     # @token
-    # @private_mode if true the bot will handle request sent by users from @users
+    # @whitelist
+    # @blacklist
     # @users list of users for private mode
-    def initialize(@name : String, @token : String, @private_mode : Bool = false, @users = [] of String)
+    def initialize(@name : String, @token : String, @whitelist : Array(String)? = nil, @blacklist : Array(String)? = nil)
       @nextoffset = 0
     end
 
@@ -43,27 +44,16 @@ module TelegramBot
           updates = get_updates
           updates.each do |u|
             if msg = u.message
-              if @private_mode && !@users.includes? msg.from!.username!
-                next
-              end
+              next if !allowed_user?(msg)
               handle msg
-              if msg.text
-                p msg.text
-              end
             elsif query = u.inline_query
-              if @private_mode && !@users.includes? query.from.username!
-                next
-              end
+              next if !allowed_user?(query)
               handle query
             elsif choosen = u.choosen_inline_result
-              if @private_mode && !@users.includes? choosen.from.username!
-                next
-              end
+              next if !allowed_user?(choosen)
               handle choosen
             elsif callback_query = u.callback_query
-              if @private_mode && !@users.includes? callback_query.from.username!
-                next
-              end
+              next if !allowed_user?(callback_query)
               handle callback_query
             end
           end
@@ -71,6 +61,39 @@ module TelegramBot
           pp ex
         end
       end
+    end
+
+    private def allowed_user?(msg) : Bool
+      if msg.is_a?(Message)
+        if msg.from.is_a?(User)
+          from = msg.from!
+        else
+          return @whitelist.is_a?(Nil)
+        end
+      else
+        from = msg.from
+      end
+
+      if blacklist = @blacklist
+        begin
+          # on the blacklist
+          return !blacklist.includes?(from.username!)
+        rescue
+          # doesn't have username at all
+          return true
+        end
+      end
+
+      if whitelist = @whitelist
+        begin
+          # not on the whitelist
+          return whitelist.includes?(from.username!)
+        rescue
+          # doesn't have username at all
+          return false
+        end
+      end
+      return true
     end
 
     private def request(method : String, params = {} of String => String)

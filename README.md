@@ -8,6 +8,8 @@
  - [x] command handler
  - [x] long polling
  - [x] inline queries
+ - [x] white & black lists
+ - [ ] async requests
 
 ## Usage
 
