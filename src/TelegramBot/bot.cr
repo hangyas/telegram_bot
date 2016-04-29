@@ -24,7 +24,7 @@ module TelegramBot
     end
 
     # handle callback query
-    def handle(inline_query : CallbackQuery)
+    def handle(callback_query : CallbackQuery)
     end
 
     # @name name of the bot (not rely used yet)
@@ -154,13 +154,15 @@ module TelegramBot
         }
     end
 
+    alias ReplyMarkup = InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil
+
     def send_message(chat_id : Int32 | String,
                      text : String,
                      parse_mode : String? = nil,
                      disable_web_page_preview : Bool? = nil,
                      disable_notification : Bool? = nil,
                      reply_to_message_id : Int32? = nil,
-                     reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil) : Message
+                     reply_markup : ReplyMarkup = nil) : Message
       if reply_markup
         reply_markup = reply_markup.to_json
       end
@@ -184,7 +186,7 @@ module TelegramBot
                    caption : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                   reply_markup : ReplyMarkup = nil)
       res = def_request "sendPhoto", chat_id, photo, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -196,7 +198,7 @@ module TelegramBot
                    title : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                   reply_markup : ReplyMarkup = nil)
       res = def_request "sendPhoto", chat_id, audio, duration, performer, title, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -206,7 +208,7 @@ module TelegramBot
                       caption : String? = nil,
                       disable_notification : Bool? = nil,
                       reply_to_message_id : Int32? = nil,
-                      reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                      reply_markup : ReplyMarkup = nil)
       res = def_request "sendDocument", chat_id, document, caption, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -215,7 +217,7 @@ module TelegramBot
                      sticker : ::File | String,
                      disable_notification : Bool? = nil,
                      reply_to_message_id : Int32? = nil,
-                     reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                     reply_markup : ReplyMarkup = nil)
       res = def_request "sendSticker", chat_id, sticker, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -228,7 +230,7 @@ module TelegramBot
                    caption : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                   reply_markup : ReplyMarkup = nil)
       res = def_request "sendVideo", chat_id, video, duration, width, height, disable_notification, caption, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -238,7 +240,7 @@ module TelegramBot
                    duration : Int32? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                   reply_markup : ReplyMarkup = nil)
       res = def_request "sendVoice", chat_id, voice, duration, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -248,7 +250,7 @@ module TelegramBot
                       longitude : Float,
                       disable_notification : Bool? = nil,
                       reply_to_message_id : Int32? = nil,
-                      reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                      reply_markup : ReplyMarkup = nil)
       res = def_request "sendLocation", chat_id, latitude, longitude, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -261,7 +263,7 @@ module TelegramBot
                    forsquare_id : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                   reply_markup : ReplyMarkup = nil)
       res = def_request "sendVenue", chat_id, latitude, longitude, title, address, forsquare_id, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
@@ -271,7 +273,7 @@ module TelegramBot
                      first_name : String,
                      last_name : String? = nil,
                      reply_to_message_id : Int32? = nil,
-                     reply_markup : ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil = nil)
+                     reply_markup : ReplyMarkup = nil)
       res = def_request "sendContact", chat_id, phone_number, first_name, last_name, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json
     end
