@@ -336,7 +336,7 @@ module TelegramBot
                                   inline_message_id : String = nil,
                                   reply_markup : InlineKeyboardMarkup? = nil)
       reply_markup = reply_markup.to_json
-      res = def_request "editMessageCaption", chat_id, message_id, inline_message_id, reply_markup
+      res = def_request "editMessageReplyMarkup", chat_id, message_id, inline_message_id, reply_markup
       Message.from_json res.to_json
     end
 
