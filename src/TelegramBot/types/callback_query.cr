@@ -9,5 +9,7 @@ module TelegramBot
       inline_message_id: {type: String, nilable: true},
       data:              String,
     })
+
+    force_getter! message, inline_message_id
   end
 end
