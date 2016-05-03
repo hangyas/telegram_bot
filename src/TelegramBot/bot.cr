@@ -346,7 +346,7 @@ module TelegramBot
                             is_personal : Bool? = nil,
                             next_offset : String? = nil,
                             switch_pm_text : String? = nil,
-                            switch_pm_parameter : Strin? = nil) : Bool
+                            switch_pm_parameter : String? = nil) : Bool
       # results   Array of InlineQueryResult  Yes   A JSON-serialized array of results for the inline query
       results = "[" + results.join(", ") { |a| a.to_json } + "]"
       res = def_request "answerInlineQuery", inline_query_id, cache_time, is_personal, next_offset, results, switch_pm_text, switch_pm_parameter
