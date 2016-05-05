@@ -9,7 +9,7 @@ module TelegramBot
       selective:         {type: Bool, nilable: true},
     })
 
-    def initialize(@keyboard)
+    def initialize(@keyboard, @resize_keyboard = nil, @one_time_keyboard = nil, @selective = nil)
     end
   end
 end
