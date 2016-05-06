@@ -14,6 +14,8 @@ class HTTP::Client
   class MultipartBody
     getter boundary
 
+    @boundary : String
+
     def bodyg
       @body + "--" + @boundary + "--\r\n"
     end
