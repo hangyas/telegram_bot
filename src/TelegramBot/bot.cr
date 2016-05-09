@@ -33,7 +33,7 @@ module TelegramBot
     # @whitelist
     # @blacklist
     # @users list of users for private mode
-    def initialize(@name : String, @token : String, @whitelist : Array(String)? = nil, @blacklist : Array(String)? = nil)
+    def initialize(@name : String, @token : String, @whitelist : Array(String)? = nil, @blacklist : Array(String)? = nil, @updates_timeout : Int32 = nil)
       @nextoffset = 0
     end
 
@@ -128,7 +128,7 @@ module TelegramBot
       request "getMe"
     end
 
-    private def get_updates(offset = @nextoffset, limit : Int32? = nil, timeout : Int32? = nil)
+    private def get_updates(offset = @nextoffset, limit : Int32? = nil, timeout : Int32? = @updates_timeout)
       data = request "getUpdates", {"offset": "#{offset}"}
 
       r = [] of Update
