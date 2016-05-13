@@ -8,6 +8,7 @@ module TelegramBot
       date:                    Int32,
       chat:                    Chat,
       forward_from:            {type: User, nilable: true},
+      forward_from_chat:       {type: Chat, nilable: true},
       forward_date:            {type: Int32, nilable: true},
       forward_to_message:      {type: Message, nilable: true},
       text:                    {type: String, nilable: true},

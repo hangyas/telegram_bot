@@ -7,6 +7,7 @@ module TelegramBot
       width:     Int32,
       height:    Int32,
       thumb:     {type: PhotoSize, nilable: true},
+      emoji:     {type: String, nilable: true},
       file_size: {type: Int32, nilable: true},
     })
   end
