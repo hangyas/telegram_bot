@@ -14,7 +14,7 @@ macro force_getter!(*names)
 # TODO steel have to find out how to handle properties with constant value like `@type = "article"`
 macro initializer_for(properties)
   {% for key, value in properties %}
-    {% properties[key] = {type: value} unless value.is_a?(HashLiteral) %}
+    {% properties[key] = {type: value} unless value.is_a?(NamedTupleLiteral) %}
   {% end %}
 
   def initialize(
