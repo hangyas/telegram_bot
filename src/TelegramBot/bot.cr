@@ -1,5 +1,6 @@
 require "http/client"
 require "json"
+require "logger"
 require "./helper.cr"
 require "./types/inline/*"
 require "./types/*"
@@ -58,9 +59,13 @@ module TelegramBot
             end
           end
         rescue ex
-          pp ex
+          logger.error(ex)
         end
       end
+    end
+
+    protected def logger : Logger
+      @logger ||= Logger.new(STDOUT).tap { |l| l.level = Logger::DEBUG }
     end
 
     private def allowed_user?(msg) : Bool
@@ -112,13 +117,10 @@ module TelegramBot
         if json["ok"]
           return json["result"]
         else
-          pp json
-          return JSON.parse %({})
+          raise json["error"].as_s
         end
       else
-        pp response.status_code
-        p response.body
-        return JSON.parse %({})
+        raise "Error #{response.status_code} in call to Telegram API: #{response.body}"
       end
     end
 
