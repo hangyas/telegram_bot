@@ -96,23 +96,17 @@ module TelegramBot
       return true
     end
 
-    private def request(method : String, params = {} of String => String)
-      headers = HTTP::Headers.new
-      parts = HTTP::Client::MultipartBody.new
-
-      params.each do |k, v|
-        if v.nil?
-          next
-        end
-        if v.is_a?(::File)
-          parts.add_file(k, v)
-        else
-          parts.add_part(k, v.to_s)
-        end
+    protected def request(method : String, params : Hash = {} of String => Object)
+      url = "https://api.telegram.org/bot#{@token}/#{method}"
+      response = if params.values.any?(&.is_a?(::File))
+        HTTP::Client.post_multipart url, params
+      elsif params.any?
+        stringified_params = params.reduce(Hash(String, String).new) { |h,k,v| h[k] = v.to_s; h }
+        HTTP::Client.post_form url, stringified_params
+      else
+        HTTP::Client.post url
       end
-
-      response = HTTP::Client.post_multipart "https://api.telegram.org/bot#{@token}/#{method}", headers, parts
-
+      
       if response.status_code == 200
         json = JSON.parse(response.body)
         if json["ok"]
