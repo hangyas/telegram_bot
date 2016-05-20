@@ -115,15 +115,12 @@ module TelegramBot
       if response.status_code == 200
         json = JSON.parse(response.body)
         if json["ok"]
-          logger.debug(json)
           return json["result"]
         else
-          logger.warn(json)
-          return JSON.parse %({})
+          raise json["error"].as_s
         end
       else
-        logger.warn(response)
-        return JSON.parse %({})
+        raise "Error #{response.status_code} in call to Telegram API: #{response.body}"
       end
     end
 
