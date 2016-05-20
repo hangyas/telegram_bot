@@ -37,7 +37,7 @@ module TelegramBot
             cmd = parts[0]
           end
 
-          pp cmd
+          logger.info(cmd)
           call cmd, message
           return true
         else
@@ -48,8 +48,7 @@ module TelegramBot
         return false
       end
     rescue e
-      puts "ERROR"
-      pp e.message
+      logger.error(e)
       # can't handle this
       return false
     end
