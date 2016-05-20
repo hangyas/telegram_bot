@@ -34,7 +34,7 @@ class HTTP::Client
       @body += "\r\n" + content + "\r\n"
     end
 
-    def add_file(name : String, file : ::File, mime_type : String = "")
+    def add_file(name : String, file : ::File, mime_type : String = "application/octet-stream")
       @body += "--" + @boundary + "\r\n"
       @body += "Content-Disposition: form-data; name=\"#{name}\"; filename=\"#{file.path}\"\r\n"
       if mime_type
