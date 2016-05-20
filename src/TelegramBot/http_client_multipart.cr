@@ -1,4 +1,5 @@
 require "http/client"
+require "tempfile"
 
 class HTTP::Client
   def self.post_multipart(url : String | URI, parts : MultipartBody | Hash, headers : HTTP::Headers | Nil = nil) : HTTP::Client::Response

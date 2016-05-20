@@ -1,4 +1,5 @@
 require "http/client"
+require "http/server"
 require "json"
 require "logger"
 require "./helper.cr"
@@ -11,8 +12,8 @@ require "./response_client.cr"
 
 module TelegramBot
   abstract class Bot
-
     @http_context : HTTP::Server::Context?
+    @logger : Logger?
 
     # handle messages
     # return: true if the message is handled successfully
@@ -38,7 +39,7 @@ module TelegramBot
     # @whitelist
     # @blacklist
     # @users list of users for private mode
-    def initialize(@name : String, @token : String, @whitelist : Array(String)? = nil, @blacklist : Array(String)? = nil, @updates_timeout : Int32 = nil)
+    def initialize(@name : String, @token : String, @whitelist : Array(String)? = nil, @blacklist : Array(String)? = nil, @updates_timeout : Int32? = nil)
       @nextoffset = 0
     end
 
@@ -135,20 +136,20 @@ module TelegramBot
 
     protected def request(method : String, force_http : Bool = false, params : Hash = {} of String => Object)
       client = if !force_http && (context = @http_context)
-        ResponseClient.new(context.not_nil!.response)
-      else
-        HttpClient.new(@token)
-      end
+                 ResponseClient.new(context.not_nil!.response)
+               else
+                 HttpClient.new(@token)
+               end
 
       response = if params.values.any?(&.is_a?(::IO::FileDescriptor))
-        multipart_params = HTTP::Client::MultipartBody.new(params)
-        client.post_multipart method, multipart_params
-      elsif params.any?
-        stringified_params = params.reduce(Hash(String, String).new) { |h,k,v| h[k] = v.to_s; h }
-        client.post_form method, stringified_params
-      else
-        client.post method
-      end
+                   multipart_params = HTTP::Client::MultipartBody.new(params)
+                   client.post_multipart method, multipart_params
+                 elsif params.any?
+                   stringified_params = params.reduce(Hash(String, String).new) { |h, k, v| h[k] = v.to_s; h }
+                   client.post_form method, stringified_params
+                 else
+                   client.post method
+                 end
 
       return nil if response.nil?
       handle_http_response(response)
@@ -215,7 +216,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def reply(message : Message, text : String) : Message
+    def reply(message : Message, text : String) : Message?
       send_message(message.chat.id, text, reply_to_message_id: message.message_id)
     end
 
@@ -421,6 +422,5 @@ module TelegramBot
       response = HttpClient.new(@token).post_multipart "setWebhook", multipart_params
       handle_http_response(response)
     end
-
   end
 end
