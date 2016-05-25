@@ -347,6 +347,35 @@ module TelegramBot
       res.as_bool if res
     end
 
+    def get_chat(chat_id : Int32 | String)
+      res = def_request "getChat", chat_id
+      Chat.from_json res.not_nil!.to_json
+    end
+
+    def leave_chat(chat_id : Int32 | String)
+      res = def_request "leaveChat", chat_id
+      res.as_bool if res
+    end
+
+    def get_chat_administrators(chat_id : Int32 | String)
+      res = def_request "getChatAdministrators", chat_id
+      res = res.not_nil!
+      admins = Array(ChatMember).new
+      res.each { |m| admins << ChatMember.from_json(m.to_json) }
+      admins
+    end
+
+    def get_chat_member(chat_id : Int32 | String,
+                        user_id : Int32)
+      res = def_request "getChatMember", chat_id, user_id
+      ChatMember.from_json res.not_nil!.to_json
+    end
+
+    def get_chat_members_count(chat_id : Int32 | String)
+      res = def_request "getChatMembersCount", chat_id
+      res.as_i if res
+    end
+
     def answer_callback_query(callback_query_id : String,
                               text : String? = nil,
                               show_alert : Bool? = nil)
