@@ -2,13 +2,12 @@ require "json"
 
 module TelegramBot
   class ForceReply
-    JSON.mapping({
-      force_reply: Bool, # TODO must be true
+    FIELDS = {
+      force_reply: {type: Bool, mustbe: true},
       selective:   {type: Bool, nilable: true},
-    })
+    }
 
-    def initialize
-      @force_reply = true
-    end
+    JSON.mapping({{FIELDS}})
+    initializer_for({{FIELDS}})
   end
 end
