@@ -2,8 +2,8 @@ require "json"
 
 module TelegramBot
   class InlineQueryResultCachedVideo < InlineQueryResult
-    JSON.mapping({
-      type:                  String,
+    FIELDS = {
+      type:                  {type: String, mustbe: "video"},
       id:                    String,
       video_file_id:         String,
       title:                 String,
@@ -11,12 +11,9 @@ module TelegramBot
       description:           {type: String, nilable: true},
       reply_markup:          {type: InlineKeyboardMarkup, nilable: true},
       input_message_content: {type: InputMessageContent, nilable: true},
-    })
+    }
 
-    def initialize(@id : String,
-                   @video_file_id : String,
-                   @title : String)
-      @type = "video"
-    end
+    JSON.mapping({{FIELDS}})
+    initializer_for({{FIELDS}})
   end
 end

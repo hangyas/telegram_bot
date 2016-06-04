@@ -2,8 +2,8 @@ require "json"
 
 module TelegramBot
   class InlineQueryResultVenue < InlineQueryResult
-    JSON.mapping({
-      type:                  String,
+    FIELDS = {
+      type:                  {type: String, mustbe: "venue"},
       id:                    String,
       latitude:              Float64,
       longitude:             Float64,
@@ -15,14 +15,9 @@ module TelegramBot
       thumb_url:             {type: String, nilable: true},
       thumb_width:           {type: Int32, nilable: true},
       thumb_height:          {type: Int32, nilable: true},
-    })
+    }
 
-    def initialize(@id : String,
-                   @latitude : Float,
-                   @longitude : Float,
-                   @title : String,
-                   @address : String)
-      @type = "venue"
-    end
+    JSON.mapping({{FIELDS}})
+    initializer_for({{FIELDS}})
   end
 end

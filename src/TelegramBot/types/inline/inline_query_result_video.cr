@@ -2,8 +2,8 @@ require "json"
 
 module TelegramBot
   class InlineQueryResultVideo < InlineQueryResult
-    JSON.mapping({
-      type:                  String,
+    FIELDS = {
+      type:                  {type: String, mustbe: "video"},
       id:                    String,
       video_url:             String,
       mime_type:             String,
@@ -16,20 +16,9 @@ module TelegramBot
       description:           {type: String, nilable: true},
       reply_markup:          {type: InlineKeyboardMarkup, nilable: true},
       input_message_content: {type: InputMessageContent, nilable: true},
-    })
+    }
 
-    def initialize(@id : String, @video_url : String,
-                   @mime_type : String,
-                   @thumb_url : String,
-                   @title : String,
-                   @caption : String? = nil,
-                   @video_width : Int32? = nil,
-                   @video_height : Int32? = nil,
-                   @video_duration : Int32? = nil,
-                   @description : String? = nil,
-                   @reply_markup : InlineKeyboardMarkup = nil,
-                   @input_message_content : InputMessageContent? = nil)
-      @type = "video"
-    end
+    JSON.mapping({{FIELDS}})
+    initializer_for({{FIELDS}})
   end
 end

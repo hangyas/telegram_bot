@@ -2,16 +2,15 @@ require "json"
 
 module TelegramBot
   class InlineQueryResultCachedSticker < InlineQueryResult
-    JSON.mapping({
-      type:                  String,
+    FIELDS = {
+      type:                  {type: String, mustbe: "sticker"},
       id:                    String,
       sticker_file_id:       String,
       reply_markup:          {type: InlineKeyboardMarkup, nilable: true},
       input_message_content: {type: InputMessageContent, nilable: true},
-    })
+    }
 
-    def initialize(@id : String, @sticker_file_id : String)
-      @type = "sticker"
-    end
+    JSON.mapping({{FIELDS}})
+    initializer_for({{FIELDS}})
   end
 end

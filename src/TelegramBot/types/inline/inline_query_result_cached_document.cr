@@ -2,8 +2,8 @@ require "json"
 
 module TelegramBot
   class InlineQueryResultCachedDocument < InlineQueryResult
-    JSON.mapping({
-      type:                  String,
+    FIELDS = {
+      type:                  {type: String, mustbe: "document"},
       id:                    String,
       title:                 String,
       document_file_id:      String,
@@ -11,12 +11,9 @@ module TelegramBot
       caption:               {type: String, nilable: true},
       reply_markup:          {type: InlineKeyboardMarkup, nilable: true},
       input_message_content: {type: InputMessageContent, nilable: true},
-    })
+    }
 
-    def initialize(@id : String,
-                   @title : String,
-                   @document_file_id : String)
-      @type = "document"
-    end
+    JSON.mapping({{FIELDS}})
+    initializer_for({{FIELDS}})
   end
 end

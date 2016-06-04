@@ -2,18 +2,17 @@ require "json"
 
 module TelegramBot
   class InlineQueryResultVoice < InlineQueryResult
-    JSON.mapping({
-      type:                  String,
+    FIELDS = {
+      type:                  {type: String, mustbe: "voice"},
       id:                    String,
       voice_url:             String,
       title:                 String,
       voice_duration:        {type: Int32, nilable: true},
       reply_markup:          {type: InlineKeyboardMarkup, nilable: true},
       input_message_content: InputMessageContent,
-    })
+    }
 
-    def initialize(@id : String, @voice_url : String, @title : String, @input_message_content : InputMessageContent)
-      @type = "voice"
-    end
+    JSON.mapping({{FIELDS}})
+    initializer_for({{FIELDS}})
   end
 end
