@@ -2,6 +2,7 @@ require "http/client"
 require "http/server"
 require "json"
 require "logger"
+require "./fiber.cr"
 require "./helper.cr"
 require "./types/inline/*"
 require "./types/*"
@@ -12,7 +13,6 @@ require "./response_client.cr"
 
 module TelegramBot
   abstract class Bot
-    @http_context : HTTP::Server::Context?
     @logger : Logger?
 
     # handle messages
@@ -61,12 +61,12 @@ module TelegramBot
     def serve(bind_address : String = "127.0.0.1", bind_port : Int32 = 80, ssl_certificate_path : String | Nil = nil, ssl_key_path : String | Nil = nil)
       server = HTTP::Server.new(bind_address, bind_port) do |context|
         begin
-          @http_context = context
+          Fiber.current.telegram_bot_server_http_context = context
           handle_update(TelegramBot::Update.from_json(context.request.body.not_nil!))
         rescue ex
           logger.error(ex)
         ensure
-          @http_context = nil
+          Fiber.current.telegram_bot_server_http_context = nil
         end
       end
 
@@ -135,8 +135,8 @@ module TelegramBot
     end
 
     protected def request(method : String, force_http : Bool = false, params : Hash = {} of String => Object)
-      client = if !force_http && (context = @http_context)
-                 ResponseClient.new(context.not_nil!.response)
+      client = if !force_http && (context = Fiber.current.telegram_bot_server_http_context)
+                 ResponseClient.new(context.not_nil!.response) ensure Fiber.current.telegram_bot_server_http_context = nil
                else
                  HttpClient.new(@token)
                end
