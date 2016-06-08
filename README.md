@@ -9,11 +9,16 @@
  - [x] long polling
  - [x] inline queries
  - [x] white & black lists
+ - [x] updates via webhooks
  - [ ] async requests
 
 ## Usage
 
-respond `world` to `/hello`
+Create your bot by inheriting from `TelegramBot::Bot`.
+
+### Commands
+
+Define which commands your bot handles via the `cmd` method in the `CmdHandler` module. For example, respond `world` to `/hello`:
 
 ```crystal
 require "TelegramBot"
@@ -34,7 +39,21 @@ my_bot = MyBot.new
 my_bot.polling
 ```
 
-or you can write your own handler:
+### Custom handlers
+
+Override any of the following `handle` methods to handle Telegram updates, be it [messages](https://core.telegram.org/bots/api#message), [inline queries](https://core.telegram.org/bots/api#inlinequery), [chosen inline results](https://core.telegram.org/bots/api#choseninlineresult) or [callback queries](https://core.telegram.org/bots/api#callbackquery):
+
+```crystal
+def handle(message : Message) : Bool
+
+def handle(inline_query : InlineQuery)
+
+def handle(inline_query : ChoosenInlineResult)
+
+def handle(callback_query : CallbackQuery)
+```
+
+For example, to echo all messages sent to the bot:
 
 ```crystal
 class EchoBot < TelegramBot::Bot
@@ -43,19 +62,46 @@ class EchoBot < TelegramBot::Bot
     reply msg, msg.text!
   end
 end
+
+EchoBot.new.polling
 ```
 
-inline queries:
+Or to answer inline queries with a list of articles:
 
 ```crystal
 class InlineBot < TelegramBot::Bot
   def handle(inline_query : TelegramBot::InlineQuery)
     results = Array(TelegramBot::InlineQueryResult).new
-    results << TelegramBot::InlineQueryResultArticle.new(id, title, msg) 
+    results << TelegramBot::InlineQueryResultArticle.new("article/1", "My first article", "Article details")
     answer_inline_query(inline_query.id, results)
   end
 end
+
+InlineBot.new.polling
 ```
+
+Remember to [enable inline mode](https://core.telegram.org/bots/api#inline-mode) in BotFather to support inline queries.
+
+### Webhooks
+
+All the examples above use the [`getUpdates`](https://core.telegram.org/bots/api#getupdates) method, constantly polling Telegram for new updates, by invoking the `polling` method on the bot.
+
+Another option is to use the [`setWebhook`](https://core.telegram.org/bots/api#setwebhook) method to tell Telegram where to POST any updates for your bot. Note that you __must__ use HTTPS in this endpoint for Telegram to work, and you can use a self-signed certificate, which you can provide as part of the `setWebhook` method:
+
+```crystal
+# Certificate has the contents of the certificate, not the path to it
+bot.set_webhook(url, certificate)
+```
+
+After invoking `setWebhook`, have your bot start an HTTPS server with the `serve` command:
+
+```crystal
+bot.serve("0.0.0.0", 443, "path/to/ssl/certificate", "path/to/ssl/key")
+```
+
+If you run your bot behind a proxy that performs SSL offloading (ie the proxy presents the certificate to Telegram, and then forwards the request to your app using plain HTTP), you may skip the last two parameters, and the bot will listen for HTTP requests instead of HTTPS.
+
+When running your bot in `serve` mode, the bot will favour executing any methods by sending a response as part of the Telegram request, rather than executing a new request.
 
 ## Installation
 
