@@ -103,6 +103,13 @@ If you run your bot behind a proxy that performs SSL offloading (ie the proxy pr
 
 When running your bot in `serve` mode, the bot will favour executing any methods by sending a response as part of the Telegram request, rather than executing a new request.
 
+### White/blacklists
+
+However it's not part of the API you can set black or white lists in the bot's constructor to filter your users by username.
+`whitelist`: if user is not present on the list (or doesn't have username) the message wont be handled
+`blacklist`: if user is present on the list the message wont be handled
+
+
 ## Installation
 
 Add this to your application's `shard.yml`:
