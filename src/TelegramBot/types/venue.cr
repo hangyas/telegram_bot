@@ -8,7 +8,5 @@ module TelegramBot
       address:       String,
       foursquare_id: {type: String, nilable: true},
     })
-
-    force_getter! foursquare_id
   end
 end

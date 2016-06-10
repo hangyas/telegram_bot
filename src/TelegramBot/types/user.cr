@@ -10,7 +10,5 @@ module TelegramBot
     }
     JSON.mapping({{FIELDS}})
     initializer_for({{FIELDS}})
-
-    force_getter! username, last_name
   end
 end

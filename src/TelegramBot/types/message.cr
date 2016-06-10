@@ -35,7 +35,5 @@ module TelegramBot
       migrate_from_chat_id:    {type: Int32, nilable: true},
       pinned_message:          {type: Message, nilable: true},
     })
-
-    force_getter! from, forward_from, forward_date, reply_to_message, text, entities, audio, document, photo, sticker, video, voice, caption, contact, location, venue, new_chat_member, left_chat_member, new_chat_title, new_chat_photo, delete_chat_photo, group_chat_created, supergroup_chat_created, migrate_to_chat_id, migrate_from_chat_id, pinned_message
   end
 end

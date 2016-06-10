@@ -1,17 +1,6 @@
-macro force_getter!(*names)
-    {% for name in names %}
-      def {{name.id}}!
-        if {{name.id}} = @{{name.id}}
-          return {{name.id}}
-        else
-          raise Exception.new("")
-        end
-      end
-    {% end %}
-  end
-
 # writes basic initializer from properti maps used by JSON.mapping
-# TODO steel have to find out how to handle properties with constant value like `@type = "article"`
+# if a `mustbe` field is present for the value, the initializer will set the
+# instance variable to the given value
 macro initializer_for(properties)
   {% for key, value in properties %}
     {% properties[key] = {type: value} unless value.is_a?(NamedTupleLiteral) %}
