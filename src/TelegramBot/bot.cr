@@ -103,8 +103,8 @@ module TelegramBot
 
     private def allowed_user?(msg) : Bool
       if msg.is_a?(Message)
-        if msg.from.is_a?(User)
-          from = msg.from!
+        if mf = msg.from
+          from = mf
         else
           return @whitelist.is_a?(Nil)
         end
@@ -113,21 +113,34 @@ module TelegramBot
       end
 
       if blacklist = @blacklist
-        begin
-          # on the blacklist
-          return !blacklist.includes?(from.username!)
-        rescue
+        if username = from.username 
+          if blacklist.includes?(username)
+            # on the blacklist
+            logger.info("#{username} blocked becaouse he/she is on the blacklist")
+            return false
+          else
+            # not on the blacklist
+            return true
+          end
+        else
           # doesn't have username at all
-          return true
+          true
         end
       end
 
       if whitelist = @whitelist
-        begin
-          # not on the whitelist
-          return whitelist.includes?(from.username!)
-        rescue
+        if username = from.username
+          if  whitelist.includes?(username)
+            # on the whitelist
+            return true
+          else
+            # not on the whitelist
+            logger.info("#{username} blocked becaouse he/she is not on the whitelist")
+            return false
+          end
+        else
           # doesn't have username at all
+          logger.info("user without username is blocked becaouse whitelist is set")
           return false
         end
       end
