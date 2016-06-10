@@ -34,7 +34,7 @@ module TelegramBot
     def handle(callback_query : CallbackQuery)
     end
 
-    # @name name of the bot (not rely used yet)
+    # @name name of the bot (not realy used)
     # @token
     # @whitelist
     # @blacklist
