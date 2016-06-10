@@ -50,7 +50,7 @@ module TelegramBot
         begin
           updates = get_updates
           updates.each do |u|
-            handle_update(u)
+            spawn handle_update(u)
           end
         rescue ex
           logger.error(ex)
