@@ -1,10 +1,14 @@
 module TelegramBot
   module CmdHandler
     macro included
-      @commands = {} of String => TelegramBot::Message ->
+      @commands = {} of String => (TelegramBot::Message ->) | (TelegramBot::Message, Array(String) ->)
     end
 
     def /(command : String, &block : Message ->)
+      @commands[command] = block
+    end
+
+    def /(command : String, &block : Message, Array(String) ->)
       @commands[command] = block
     end
 
@@ -12,11 +16,18 @@ module TelegramBot
       @commands[command] = block
     end
 
-    def call(cmd : String, message : Message)
+    def cmd(command : String, &block : Message, Array(String) ->)
+      @commands[command] = block
+    end
+
+    def call(cmd : String, message : Message, params : Array(String))
       if proc = @commands[cmd]?
         if txt = message.text || message.caption
-          message.text = txt.split(' ')[1..-1].join(" ")
-          proc.call(message)
+          if proc.is_a?(Message ->)
+            proc.call(message)
+          else
+            proc.call(message, params)
+          end
         end
       end
     end
@@ -24,7 +35,8 @@ module TelegramBot
     def handle(message : Message) : Bool
       if txt = message.text || message.caption
         if txt[0] == '/'
-          cmd = txt.split(' ')[0][1..-1]
+          a = txt.split(' ')
+          cmd = a[0][1..-1]
 
           if cmd.includes? '@'
             parts = cmd.split('@')
@@ -38,7 +50,7 @@ module TelegramBot
           end
 
           logger.info(cmd)
-          call cmd, message
+          call cmd, message, a[1..-1]
           return true
         else
           return false

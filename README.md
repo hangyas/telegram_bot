@@ -32,6 +32,11 @@ class MyBot < TelegramBot::Bot
     cmd "hello" do |msg|
       reply msg, "world!"
     end
+
+    # /add 5 7 => 12
+    cmd "add" do |msg, params|
+      reply msg, "#{params[0].to_i + params[1].to_i}"
+    end
   end
 end
 
@@ -106,7 +111,9 @@ When running your bot in `serve` mode, the bot will favour executing any methods
 ### White/blacklists
 
 However it's not part of the API you can set black or white lists in the bot's constructor to filter your users by username.
+
 `whitelist`: if user is not present on the list (or doesn't have username) the message wont be handled
+
 `blacklist`: if user is present on the list the message wont be handled
 
 
