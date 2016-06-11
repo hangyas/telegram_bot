@@ -18,7 +18,7 @@ Create your bot by inheriting from `TelegramBot::Bot`.
 
 ### Commands
 
-Define which commands your bot handles via the `cmd` method in the `CmdHandler` module. For example, respond `world` to `/hello`:
+Define which commands your bot handles via the `cmd` method in the `CmdHandler` module. For example, respond `world` to `/hello` and perform simple calculation with `/add`:
 
 ```crystal
 require "TelegramBot"
@@ -49,7 +49,7 @@ my_bot.polling
 Override any of the following `handle` methods to handle Telegram updates, be it [messages](https://core.telegram.org/bots/api#message), [inline queries](https://core.telegram.org/bots/api#inlinequery), [chosen inline results](https://core.telegram.org/bots/api#choseninlineresult) or [callback queries](https://core.telegram.org/bots/api#callbackquery):
 
 ```crystal
-def handle(message : Message) : Bool
+def handle(message : Message)
 
 def handle(inline_query : InlineQuery)
 
@@ -62,9 +62,10 @@ For example, to echo all messages sent to the bot:
 
 ```crystal
 class EchoBot < TelegramBot::Bot
-  def handle(update : Update)
-    msg = update.message!
-    reply msg, msg.text!
+  def handle(message : Message)
+    if text = message.text
+      reply message, text
+    end
   end
 end
 
@@ -112,9 +113,9 @@ When running your bot in `serve` mode, the bot will favour executing any methods
 
 However it's not part of the API you can set black or white lists in the bot's constructor to filter your users by username.
 
-`whitelist`: if user is not present on the list (or doesn't have username) the message wont be handled
+`whitelist`: if user is not present on the list (or doesn't have username) the message won't be handled
 
-`blacklist`: if user is present on the list the message wont be handled
+`blacklist`: if user is present on the list the message won't be handled
 
 
 ## Installation

@@ -22,17 +22,18 @@ module TelegramBot
 
     def call(cmd : String, message : Message, params : Array(String))
       if proc = @commands[cmd]?
-        if txt = message.text || message.caption
-          if proc.is_a?(Message ->)
-            proc.call(message)
-          else
-            proc.call(message, params)
-          end
+        logger.info("handle /#{cmd}")
+        if proc.is_a?(Message ->)
+          proc.call(message)
+        else
+          proc.call(message, params)
         end
+      else
+        raise "there is no command handler for `/#{cmd}`"
       end
     end
 
-    def handle(message : Message) : Bool
+    def handle(message : Message)
       if txt = message.text || message.caption
         if txt[0] == '/'
           a = txt.split(' ')
@@ -43,26 +44,15 @@ module TelegramBot
 
             if parts[1].upcase != @name.upcase
               # not for us
-              return false
+              return
             end
 
             cmd = parts[0]
           end
 
-          logger.info(cmd)
           call cmd, message, a[1..-1]
-          return true
-        else
-          return false
         end
-      else
-        puts message.to_json
-        return false
       end
-    rescue e
-      logger.error(e)
-      # can't handle this
-      return false
     end
   end
 end

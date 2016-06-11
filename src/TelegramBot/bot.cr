@@ -16,35 +16,35 @@ module TelegramBot
     @logger : Logger?
 
     # handle messages
-    # return: true if the message is handled successfully
-    #         this can be useful for overwrited handlers
-    def handle(message : Message) : Bool
-      return false
+    def handle(message : Message)
+      raise "message handler is not implemented"
     end
 
     # handle inline query
     def handle(inline_query : InlineQuery)
+      raise "inline_query handler is not implemented"
     end
 
     # handle choosen inlien query
-    def handle(inline_query : ChoosenInlineResult)
+    def handle(choosen_inline_result : ChoosenInlineResult)
+      raise "choosen_inline_result handler is not implemented"
     end
 
     # handle callback query
     def handle(callback_query : CallbackQuery)
+      raise "callback_query handler is not implemented"
     end
 
-    # @name name of the bot (not realy used)
+    # @name username of the bot
     # @token
     # @whitelist
     # @blacklist
-    # @users list of users for private mode
+    # @updates_timeout
     def initialize(@name : String, @token : String, @whitelist : Array(String)? = nil, @blacklist : Array(String)? = nil, @updates_timeout : Int32? = nil)
       @nextoffset = 0
     end
 
     # run long polling in a loop and call handlers for messages
-    # on the current thread!
     def polling
       loop do
         begin
@@ -95,6 +95,8 @@ module TelegramBot
         return if !allowed_user?(callback_query)
         handle callback_query
       end
+    rescue ex
+      logger.error("update was not handled because: #{ex.message}")
     end
 
     protected def logger : Logger
@@ -116,7 +118,7 @@ module TelegramBot
         if username = from.username 
           if blacklist.includes?(username)
             # on the blacklist
-            logger.info("#{username} blocked becaouse he/she is on the blacklist")
+            logger.info("#{username} blocked because he/she is on the blacklist")
             return false
           else
             # not on the blacklist
@@ -135,12 +137,12 @@ module TelegramBot
             return true
           else
             # not on the whitelist
-            logger.info("#{username} blocked becaouse he/she is not on the whitelist")
+            logger.info("#{username} blocked because he/she is not on the whitelist")
             return false
           end
         else
           # doesn't have username at all
-          logger.info("user without username is blocked becaouse whitelist is set")
+          logger.info("user without username is blocked because whitelist is set")
           return false
         end
       end
@@ -238,7 +240,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    # photo file or file id
+    # @photo file or file id
     def send_photo(chat_id : Int32 | String,
                    photo : ::File | String,
                    caption : String? = nil,
