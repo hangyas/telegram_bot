@@ -452,7 +452,7 @@ module TelegramBot
     end
 
     def download(file : File)
-      download(file.file_path!)
+      file.file_path.try { |path| download(path) }
     end
 
     def download(file_path : String)
