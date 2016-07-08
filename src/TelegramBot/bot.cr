@@ -115,7 +115,7 @@ module TelegramBot
       end
 
       if blacklist = @blacklist
-        if username = from.username 
+        if username = from.username
           if blacklist.includes?(username)
             # on the blacklist
             logger.info("#{username} blocked because he/she is on the blacklist")
@@ -132,7 +132,7 @@ module TelegramBot
 
       if whitelist = @whitelist
         if username = from.username
-          if  whitelist.includes?(username)
+          if whitelist.includes?(username)
             # on the whitelist
             return true
           else
@@ -160,7 +160,7 @@ module TelegramBot
                    multipart_params = HTTP::Client::MultipartBody.new(params)
                    client.post_multipart method, multipart_params
                  elsif params.any?
-                   stringified_params = params.reduce(Hash(String, String).new) { |h, k, v| h[k] = v.to_s; h }
+                   stringified_params = params.reduce(Hash(String, String).new) { |h, (k, v)| h[k] = v.to_s; h }
                    client.post_form method, stringified_params
                  else
                    client.post method
@@ -188,7 +188,7 @@ module TelegramBot
     end
 
     private def get_updates(offset = @nextoffset, limit : Int32? = nil, timeout : Int32? = @updates_timeout)
-      data = request("getUpdates", force_http: true, params: {"offset": "#{offset}"}).not_nil!
+      data = request("getUpdates", force_http: true, params: {"offset" => "#{offset}"}).not_nil!
 
       r = [] of Update
       data.each do |json|
@@ -204,7 +204,7 @@ module TelegramBot
     macro def_request(name, *args)
         request {{name}}, force_http: false, params: {
           {% for arg in args %}
-            {{arg.stringify}} : {{arg.id}},
+            {{arg.stringify}} => {{arg.id}},
           {% end %}
         }
     end
@@ -212,7 +212,7 @@ module TelegramBot
     macro def_force_request(name, *args)
         request {{name}}, force_http: true, params: {
           {% for arg in args %}
-            {{arg.stringify}} : {{arg.id}},
+            {{arg.stringify}} => {{arg.id}},
           {% end %}
         }
     end
