@@ -78,7 +78,10 @@ Or to answer inline queries with a list of articles:
 class InlineBot < TelegramBot::Bot
   def handle(inline_query : TelegramBot::InlineQuery)
     results = Array(TelegramBot::InlineQueryResult).new
-    results << TelegramBot::InlineQueryResultArticle.new("article/1", "My first article", "Article details")
+
+    content = InputTextMessageContent.new "Article details"
+    results << TelegramBot::InlineQueryResultArticle.new("article/1", "My first article", content)
+
     answer_inline_query(inline_query.id, results)
   end
 end
