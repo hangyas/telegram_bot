@@ -404,29 +404,41 @@ module TelegramBot
                           text : String? = nil,
                           parse_mode : String? = nil,
                           disable_web_page_preview : Bool? = nil,
-                          reply_markup : InlineKeyboardMarkup? = nil) : Message?
+                          reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
       reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageText", chat_id, message_id, inline_message_id, text, parse_mode, disable_web_page_preview, reply_markup
-      Message.from_json res.to_json if res
+      if res == "True"
+        return true
+      else
+        Message.from_json res.to_json if res
+      end
     end
 
     def edit_message_caption(chat_id : Int32 | String | Nil = nil,
                              message_id : Int32? = nil,
                              inline_message_id : String = nil,
                              caption : String? = nil,
-                             reply_markup : InlineKeyboardMarkup? = nil) : Message?
+                             reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
       reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageCaption", chat_id, message_id, inline_message_id, caption, reply_markup
-      Message.from_json res.to_json if res
+      if res == "True"
+        return true
+      else
+        Message.from_json res.to_json if res
+      end
     end
 
     def edit_message_reply_markup(chat_id : Int32 | String | Nil = nil,
                                   message_id : Int32? = nil,
                                   inline_message_id : String = nil,
-                                  reply_markup : InlineKeyboardMarkup? = nil) : Message?
+                                  reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
       reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageReplyMarkup", chat_id, message_id, inline_message_id, reply_markup
-      Message.from_json res.to_json if res
+      if res == "True"
+        return true
+      else
+        Message.from_json res.to_json if res
+      end
     end
 
     def answer_inline_query(inline_query_id : String,
