@@ -36,7 +36,7 @@ module TelegramBot
     def handle(message : Message)
       if txt = message.text || message.caption
         if txt[0] == '/'
-          a = txt.split(' ')
+          a = txt.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, "").split(' ')
           cmd = a[0][1..-1]
 
           if cmd.includes? '@'
