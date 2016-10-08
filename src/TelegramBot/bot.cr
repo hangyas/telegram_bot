@@ -393,8 +393,9 @@ module TelegramBot
 
     def answer_callback_query(callback_query_id : String,
                               text : String? = nil,
-                              show_alert : Bool? = nil)
-      res = def_request "answerCallbackQuery", callback_query_id, text, show_alert
+                              show_alert : Bool? = nil,
+                              url : String? = nil)
+      res = def_request "answerCallbackQuery", callback_query_id, text, show_alert, url
       res.as_bool if res
     end
 
@@ -477,6 +478,47 @@ module TelegramBot
       logger.info("Setting webhook to '#{url}'#{" with certificate" if certificate}")
       response = HttpClient.new(@token).post_multipart "setWebhook", multipart_params
       handle_http_response(response)
+    end
+
+    # game functions
+
+    def send_game(chat_id : Int32 | String,
+                  game_short_name : String,
+                  disable_notification : Bool? = nil,
+                  reply_to_message_id : Int32? = nil,
+                  reply_markup : InlineKeyboardMarkup? = nil) : Message?
+      reply_markup = reply_markup.try(&.to_json)
+      res = def_request "sendGame", chat_id, game_short_name, disable_notification, reply_to_message_id, reply_markup
+      Message.from_json res.to_json if res
+    end
+
+    # Use this method to set the score of the specified user in a game.
+    # On success, if the message was sent by the bot, returns the edited Message,
+    # otherwise returns True. Returns an error, if the new score is not greater
+    # than the user's current score in the chat.
+    def set_game_score(user_id : Int32,
+                       score : Int32,
+                       chat_id : Int32 | String | Nil = nil,
+                       message_id : Int32? = nil,
+                       inline_message_id : String? = nil,
+                       edit_message : Bool? = nil) : Message | Bool | Nil
+      res = def_request "setGameScore", user_id, score, chat_id, message_id, inline_message_id, edit_message
+      if res == "True"
+        return true
+      else
+        Message.from_json res.to_json if res
+      end
+    end
+
+    def get_game_high_scores(user_id : Int32,
+                             chat_id : Int32 | String | Nil = nil,
+                             message_id : Int32? = nil,
+                             inline_message_id : String? = nil) : Array(GameHighScore)
+      res = def_request "getGameHighScores", user_id, chat_id, message_id, inline_message_id
+      res = res.not_nil!
+      r = Array(GameHighScore).new
+      res.each { |score| r << GameHighScore.from_json(score.to_json) }
+      return r
     end
   end
 end
