@@ -9,6 +9,7 @@ module TelegramBot
       chat:                    Chat,
       forward_from:            {type: User, nilable: true},
       forward_from_chat:       {type: Chat, nilable: true},
+      forward_from_message_id: {type: Int32, nilable: true},
       forward_date:            {type: Int32, nilable: true},
       reply_to_message:        {type: Message, nilable: true},
       edit_date:               {type: Int32, nilable: true},
@@ -31,6 +32,7 @@ module TelegramBot
       delete_chat_photo:       {type: Bool, nilable: true}, # must be true
       group_chat_created:      {type: Bool, nilable: true}, # must be true
       supergroup_chat_created: {type: Bool, nilable: true}, # must be true
+      channel_chat_created:    {type: Bool, nilable: true}, # must be true
       migrate_to_chat_id:      {type: Int32, nilable: true},
       migrate_from_chat_id:    {type: Int32, nilable: true},
       pinned_message:          {type: Message, nilable: true},

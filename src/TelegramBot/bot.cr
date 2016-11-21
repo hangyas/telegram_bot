@@ -20,6 +20,19 @@ module TelegramBot
       raise "message handler is not implemented"
     end
 
+    # handle edited messages
+    def handle_edited(message : Message)
+      raise "edited message handler is not implemented"
+    end
+
+    def handle_channel_post(message : Message)
+      raise "channel post handler is not implemented"
+    end
+
+    def handle_edited_channel_post(message : Message)
+      raise "edited channel post handler is not implemented"
+    end
+
     # handle inline query
     def handle(inline_query : InlineQuery)
       raise "inline_query handler is not implemented"
@@ -94,6 +107,15 @@ module TelegramBot
       elsif callback_query = u.callback_query
         return if !allowed_user?(callback_query)
         handle callback_query
+      elsif message = u.edited_message
+        return if !allowed_user?(message)
+        handle_edited message
+      elsif post = u.channel_post
+        return if !allowed_user?(post)
+        handle_channel_post post
+      elsif post = u.edited_channel_post
+        return if !allowed_user?(post)
+        handle_edited_channel_post post
       end
     rescue ex
       logger.error("update was not handled because: #{ex.message}")
@@ -217,7 +239,7 @@ module TelegramBot
         }
     end
 
-    alias ReplyMarkup = InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardHide | ForceReply | Nil
+    alias ReplyMarkup = InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply | Nil
 
     def send_message(chat_id : Int32 | String,
                      text : String,
@@ -394,8 +416,9 @@ module TelegramBot
     def answer_callback_query(callback_query_id : String,
                               text : String? = nil,
                               show_alert : Bool? = nil,
-                              url : String? = nil)
-      res = def_request "answerCallbackQuery", callback_query_id, text, show_alert, url
+                              url : String? = nil,
+                              cache_time : Int32? = nil)
+      res = def_request "answerCallbackQuery", callback_query_id, text, show_alert, url, cache_time
       res.as_bool if res
     end
 
@@ -492,17 +515,14 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    # Use this method to set the score of the specified user in a game.
-    # On success, if the message was sent by the bot, returns the edited Message,
-    # otherwise returns True. Returns an error, if the new score is not greater
-    # than the user's current score in the chat.
     def set_game_score(user_id : Int32,
                        score : Int32,
+                       force : Bool? = nil,
+                       disable_edit_message : Bool? = nil,
                        chat_id : Int32 | String | Nil = nil,
                        message_id : Int32? = nil,
-                       inline_message_id : String? = nil,
-                       edit_message : Bool? = nil) : Message | Bool | Nil
-      res = def_request "setGameScore", user_id, score, chat_id, message_id, inline_message_id, edit_message
+                       inline_message_id : String? = nil) : Message | Bool | Nil
+      res = def_request "setGameScore", user_id, score, force, disable_edit_message, chat_id, message_id, inline_message_id
       if res == "True"
         return true
       else
