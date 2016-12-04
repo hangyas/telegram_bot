@@ -53,9 +53,15 @@ def handle(message : Message)
 
 def handle(inline_query : InlineQuery)
 
-def handle(inline_query : ChoosenInlineResult)
+def handle(choosen_inline_result : ChoosenInlineResult)
 
 def handle(callback_query : CallbackQuery)
+
+def handle_edited(message : Message)
+
+def handle_channel_post(message : Message)
+
+def handle_edited_channel_post(message : Message)
 ```
 
 For example, to echo all messages sent to the bot:
