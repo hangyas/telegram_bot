@@ -53,7 +53,12 @@ module TelegramBot
     # @whitelist
     # @blacklist
     # @updates_timeout
-    def initialize(@name : String, @token : String, @whitelist : Array(String)? = nil, @blacklist : Array(String)? = nil, @updates_timeout : Int32? = nil)
+    def initialize(@name : String,
+                   @token : String,
+                   @whitelist : Array(String)? = nil,
+                   @blacklist : Array(String)? = nil,
+                   @updates_timeout : Int32? = nil,
+                   @allowed_updates : Array(String)? = nil)
       @nextoffset = 0
     end
 
@@ -171,7 +176,7 @@ module TelegramBot
       return true
     end
 
-    protected def request(method : String, force_http : Bool = false, params : Hash = {} of String => Object)
+    protected def request(method : String, force_http : Bool = false, params : Hash = {} of String => String | Int32 | Nil)
       client = if !force_http && (context = Fiber.current.telegram_bot_server_http_context)
                  ResponseClient.new(context.not_nil!.response) ensure Fiber.current.telegram_bot_server_http_context = nil
                else
@@ -209,8 +214,8 @@ module TelegramBot
       request "getMe", force_http: true
     end
 
-    private def get_updates(offset = @nextoffset, limit : Int32? = nil, timeout : Int32? = @updates_timeout)
-      data = request("getUpdates", force_http: true, params: {"offset" => "#{offset}"}).not_nil!
+    private def get_updates(offset = @nextoffset, limit : Int32? = nil, timeout : Int32? = @updates_timeout, allowed_updates : Array(String)? = @allowed_updates)
+      data = request("getUpdates", force_http: true, params: {"offset" => offset, "limit" => limit, "timeout" => timeout, "allowed_updates" => allowed_updates}).not_nil!
 
       r = [] of Update
       data.each do |json|
@@ -495,12 +500,17 @@ module TelegramBot
       HTTP::Client.get("https://api.telegram.org/file/bot#{@token}/#{file_path}").body
     end
 
-    def set_webhook(url : String, certificate : ::File | String | Nil = nil)
-      multipart_params = HTTP::Client::MultipartBody.new({"url" => url})
+    def set_webhook(url : String, certificate : ::File | String | Nil = nil, max_connections : Int32? = nil, allowed_updates : Array(String)? = @allowed_updates)
+      multipart_params = HTTP::Client::MultipartBody.new({"url" => url, "max_connections" => max_connections, "allowed_updates" => allowed_updates})
       multipart_params.add_file("certificate", certificate, filename: "cert.pem") if certificate
       logger.info("Setting webhook to '#{url}'#{" with certificate" if certificate}")
       response = HttpClient.new(@token).post_multipart "setWebhook", multipart_params
       handle_http_response(response)
+    end
+
+    def delete_webhook : Bool?
+      res = request "deleteWebhook", force_http: true
+      res.as_bool if res
     end
 
     # game functions
