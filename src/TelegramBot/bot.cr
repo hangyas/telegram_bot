@@ -84,13 +84,13 @@ module TelegramBot
       end
 
       if ssl_certificate_path && ssl_key_path
-        ssl = OpenSSL::SSL::Context.new
+        ssl = OpenSSL::SSL::Context::Server.new
         ssl.certificate_chain = ssl_certificate_path.not_nil!
         ssl.private_key = ssl_key_path.not_nil!
-        server.ssl = ssl
+        server.tls = ssl
       end
 
-      logger.info("Listening for Telegram requests in #{bind_address}:#{bind_port}#{" with ssl" if server.ssl}")
+      logger.info("Listening for Telegram requests in #{bind_address}:#{bind_port}#{" with tls" if server.tls}")
       server.listen
     end
 
