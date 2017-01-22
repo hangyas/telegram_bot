@@ -45,7 +45,7 @@ class HTTP::Client
       end
     end
 
-    def add_part(name : String, content : String, mime_type : String = nil)
+    def add_part(name : String, content : String, mime_type : String? = nil)
       @body += "--" + @boundary + "\r\n"
       @body += "Content-Disposition: form-data; name=\"#{name}\"\r\n"
       if mime_type
