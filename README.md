@@ -133,8 +133,8 @@ Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
-  TelegramBot:
-    github: hangyas/TelegramBot
+  telegram-bot:
+    github: hangyas/telegram-bot
 ```
 
 
