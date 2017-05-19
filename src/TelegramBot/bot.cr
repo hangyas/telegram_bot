@@ -10,6 +10,7 @@ require "./types/*"
 require "./http_client_multipart.cr"
 require "./http_client.cr"
 require "./response_client.cr"
+require "./api_exception.cr"
 
 module TelegramBot
   abstract class Bot

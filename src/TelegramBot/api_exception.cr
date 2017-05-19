@@ -11,7 +11,7 @@ module TelegramBot
     end
 
     def message
-      "Error #@code in call to Telegram API : #@data"
+      "Error #{@code} in call to Telegram API : #{@data}"
     end
   end
 end
