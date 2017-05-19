@@ -10,6 +10,7 @@ require "./types/*"
 require "./http_client_multipart.cr"
 require "./http_client.cr"
 require "./response_client.cr"
+require "./api_exception.cr"
 
 module TelegramBot
   abstract class Bot
@@ -203,10 +204,16 @@ module TelegramBot
         if json["ok"]
           return json["result"]
         else
-          raise json["error"].as_s
+          raise APIException.new(200, json)
         end
       else
-        raise "Error #{response.status_code} in call to Telegram API: #{response.body}"
+        json = begin
+          JSON.parse(response.body)
+        rescue JSON::ParseException
+          nil
+        end
+
+        raise APIException.new(response.status_code, json)
       end
     end
 
