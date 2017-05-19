@@ -21,7 +21,7 @@ Create your bot by inheriting from `TelegramBot::Bot`.
 Define which commands your bot handles via the `cmd` method in the `CmdHandler` module. For example, respond `world` to `/hello` and perform simple calculation with `/add`:
 
 ```crystal
-require "TelegramBot"
+require "telegram_bot"
 
 class MyBot < TelegramBot::Bot
   include TelegramBot::CmdHandler
@@ -133,8 +133,8 @@ Add this to your application's `shard.yml`:
 
 ```yaml
 dependencies:
-  telegram-bot:
-    github: hangyas/telegram-bot
+  telegram_bot:
+    github: hangyas/telegram_bot
 ```
 
 
