@@ -1,4 +1,4 @@
-require "./TelegramBot/*"
+require "./telegram_bot/*"
 
 module TelegramBot
   def self.new(token : String)
