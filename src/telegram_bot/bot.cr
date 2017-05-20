@@ -265,6 +265,10 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
+    def send(message : Message, text : String) : Message?
+      send_message(message.chat.id, text)
+    end
+
     def reply(message : Message, text : String) : Message?
       send_message(message.chat.id, text, reply_to_message_id: message.message_id)
     end
