@@ -520,7 +520,9 @@ module TelegramBot
       res.as_bool if res
     end
 
-    # game functions
+    #
+    # Games
+    #
 
     def send_game(chat_id : Int32 | String,
                   game_short_name : String,
@@ -556,6 +558,58 @@ module TelegramBot
       r = Array(GameHighScore).new
       res.each { |score| r << GameHighScore.from_json(score.to_json) }
       return r
+    end
+
+    #
+    # Payments
+    #
+
+    def send_invoice(chat_id : Int32,
+                     tilte : String,
+                     description : String,
+                     payload : String,
+                     provider_token : String,
+                     start_parameter : String,
+                     currency : String,
+                     prices : Array(LabeledPrice),
+                     photo_url : String? = nil,
+                     photo_size : Int32? = nil,
+                     photo_width : Int32? = nil,
+                     photo_height : Int32? = nil,
+                     need_name : Bool? = nil,
+                     need_phone_number : Bool? = nil,
+                     need_email : Bool? = nil,
+                     need_shipping_address : Bool? = nil,
+                     is_flexible : Bool? = nil,
+                     disable_notification : Bool? = nil,
+                     reply_to_message_id : Int32? = nil,
+                     reply_markup : ReplyMarkup = nil) : Message?
+      reply_markup = reply_markup.try(&.to_json)
+      res = def_request "sendInvoice", chat_id, tilte, description, payload, provider_token, start_parameter, currency, prices, photo_url, photo_size, photo_width, photo_height, need_name, need_phone_number, need_email, need_shipping_address, is_flexible, disable_notification, reply_to_message_id, reply_markup
+      Message.from_json res.to_json if res
+    end
+
+    def answer_shipping_query(shipping_query_id : String,
+                              ok : Bool,
+                              shipping_option : Array(ShippingOption)? = nil,
+                              error_message : String? = nil) : Bool | Message | Nil
+      res = def_request "answerShippingQuery", shipping_query_id, ok, shipping_option, error_message
+      if res == "True"
+        return true
+      else
+        Message.from_json res.to_json if res
+      end
+    end
+
+    def answer_pre_checkout_query(pre_checkout_query_id : String,
+                                  ok : Bool,
+                                  error_message : String? = nil) : Bool | Message | Nil
+      res = def_request "answerPreCheckoutQuery", pre_checkout_query_id, ok, error_message
+      if res == "True"
+        return true
+      else
+        Message.from_json res.to_json if res
+      end
     end
   end
 end

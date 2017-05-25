@@ -1,2 +1,2 @@
 require "spec"
-require "../src/TelegramBot"
+require "../src/telegram_bot"

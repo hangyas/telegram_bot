@@ -36,6 +36,8 @@ module TelegramBot
       migrate_to_chat_id:      {type: Int32, nilable: true},
       migrate_from_chat_id:    {type: Int32, nilable: true},
       pinned_message:          {type: Message, nilable: true},
+      invoice:                 {type: Invoice, nilable: true},
+      successful_payment:      {type: SuccessfulPayment, nilable: true},
     })
   end
 end
