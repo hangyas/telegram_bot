@@ -488,6 +488,16 @@ module TelegramBot
       end
     end
 
+    def delete_message(char_id : Int32 | String,
+                       message_id : Int32) : Message | Bool | Nil
+      res = def_request "deleteMessage", chat_id, message_id
+      if res == "True"
+        return true
+      else
+        Message.from_json res.to_json if res
+      end
+    end
+
     def answer_inline_query(inline_query_id : String,
                             results : Array(InlineQueryResult),
                             cache_time : Int32? = nil,
