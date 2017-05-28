@@ -339,6 +339,17 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
+    def send_video_note(chat_id : Int32 | String,
+                        video_note : ::File | String,
+                        duration : Int32? = nil,
+                        length : Int32? = nil,
+                        disable_notification : Bool? = nil,
+                        reply_to_message_id : Int32? = nil,
+                        reply_markup : ReplyMarkup = nil) : Message?
+      res = def_request "sendVideoNote", chat_id, video, duration, length, disable_notification, caption, reply_to_message_id, reply_markup
+      Message.from_json res.to_json if res
+    end
+
     def send_location(chat_id : Int32 | String,
                       latitude : Float,
                       longitude : Float,

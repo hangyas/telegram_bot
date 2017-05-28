@@ -21,6 +21,7 @@ module TelegramBot
       sticker:                 {type: Sticker, nilable: true},
       video:                   {type: Video, nilable: true},
       voice:                   {type: Voice, nilable: true},
+      video_note:              {type: VideoNote, nilable: true},
       caption:                 {type: String, nilable: true},
       contact:                 {type: Contact, nilable: true},
       location:                {type: Location, nilable: true},
