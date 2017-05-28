@@ -8,6 +8,7 @@ module TelegramBot
       gif_url:               String,
       gif_width:             {type: Int32, nilable: true},
       gif_height:            {type: Int32, nilable: true},
+      gif_duration:          {type: Int32, nilable: true},
       thumb_url:             String,
       title:                 {type: String, nilable: true},
       caption:               {type: String, nilable: true},

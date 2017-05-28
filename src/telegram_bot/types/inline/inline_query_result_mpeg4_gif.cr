@@ -8,6 +8,7 @@ module TelegramBot
       mpeg4_url:             String,
       mpeg4_width:           {type: Int32, nilable: true},
       mpeg4_height:          {type: Int32, nilable: true},
+      mpeg4_duration:        {type: Int32, nilable: true},
       thumb_url:             String,
       title:                 {type: String, nilable: true},
       caption:               {type: String, nilable: true},

@@ -26,7 +26,7 @@ module TelegramBot
       contact:                 {type: Contact, nilable: true},
       location:                {type: Location, nilable: true},
       venue:                   {type: Venue, nilable: true},
-      new_chat_member:         {type: User, nilable: true},
+      new_chat_members:        {type: Array(User), nilable: true},
       left_chat_member:        {type: User, nilable: true},
       new_chat_title:          {type: String, nilable: true},
       new_chat_photo:          {type: Array(PhotoSize), nilable: true},
