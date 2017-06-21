@@ -253,7 +253,7 @@ module TelegramBot
 
     alias ReplyMarkup = InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply | Nil
 
-    def send_message(chat_id : Int32 | String,
+    def send_message(chat_id : Int | String,
                      text : String,
                      parse_mode : String? = nil,
                      disable_web_page_preview : Bool? = nil,
@@ -269,13 +269,13 @@ module TelegramBot
       send_message(message.chat.id, text, reply_to_message_id: message.message_id)
     end
 
-    def forward_message(chat_id : Int32 | String, from_chat_id : Int32 | String, message_id : Int32, disable_notification : Bool? = nil) : Message?
+    def forward_message(chat_id : Int | String, from_chat_id : Int | String, message_id : Int32, disable_notification : Bool? = nil) : Message?
       res = def_request "forwardMessage", chat_id, from_chat_id, message_id, disable_notification
       Message.from_json res.to_json if res
     end
 
     # @photo file or file id
-    def send_photo(chat_id : Int32 | String,
+    def send_photo(chat_id : Int | String,
                    photo : ::File | String,
                    caption : String? = nil,
                    disable_notification : Bool? = nil,
@@ -285,7 +285,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_audio(chat_id : Int32 | String,
+    def send_audio(chat_id : Int | String,
                    audio : ::File | String,
                    duration : Int32? = nil,
                    performer : String? = nil,
@@ -297,7 +297,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_document(chat_id : Int32 | String,
+    def send_document(chat_id : Int | String,
                       document : ::File | String,
                       caption : String? = nil,
                       disable_notification : Bool? = nil,
@@ -307,7 +307,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_sticker(chat_id : Int32 | String,
+    def send_sticker(chat_id : Int | String,
                      sticker : ::File | String,
                      disable_notification : Bool? = nil,
                      reply_to_message_id : Int32? = nil,
@@ -316,7 +316,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_video(chat_id : Int32 | String,
+    def send_video(chat_id : Int | String,
                    video : ::File | String,
                    duration : Int32? = nil,
                    width : Int32? = nil,
@@ -329,7 +329,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_voice(chat_id : Int32 | String,
+    def send_voice(chat_id : Int | String,
                    voice : ::File | String,
                    duration : Int32? = nil,
                    disable_notification : Bool? = nil,
@@ -339,7 +339,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_video_note(chat_id : Int32 | String,
+    def send_video_note(chat_id : Int | String,
                         video_note : ::File | String,
                         duration : Int32? = nil,
                         length : Int32? = nil,
@@ -350,7 +350,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_location(chat_id : Int32 | String,
+    def send_location(chat_id : Int | String,
                       latitude : Float,
                       longitude : Float,
                       disable_notification : Bool? = nil,
@@ -360,7 +360,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_venue(chat_id : Int32 | String,
+    def send_venue(chat_id : Int | String,
                    latitude : Float,
                    longitude : Float,
                    title : String,
@@ -373,7 +373,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_contact(chat_id : Int32 | String,
+    def send_contact(chat_id : Int | String,
                      phone_number : String,
                      first_name : String,
                      last_name : String? = nil,
@@ -383,7 +383,7 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def send_chat_action(chat_id : Int32 | String,
+    def send_chat_action(chat_id : Int | String,
                          action : String)
       def_request "sendChatAction", chat_id, action
     end
@@ -395,29 +395,29 @@ module TelegramBot
       UserProfilePhotos.from_json res.not_nil!.to_json
     end
 
-    def kick_chat_member(chat_id : Int32 | String,
+    def kick_chat_member(chat_id : Int | String,
                          user_id : Int32)
       res = def_request "kickChatMember", chat_id, user_id
       res.as_bool if res
     end
 
-    def unban_chat_member(chat_id : Int32 | String,
+    def unban_chat_member(chat_id : Int | String,
                           user_id : Int32)
       res = def_request "unbanChatMember", chat_id, user_id
       res.as_bool if res
     end
 
-    def get_chat(chat_id : Int32 | String)
+    def get_chat(chat_id : Int | String)
       res = def_request "getChat", chat_id
       Chat.from_json res.not_nil!.to_json
     end
 
-    def leave_chat(chat_id : Int32 | String)
+    def leave_chat(chat_id : Int | String)
       res = def_request "leaveChat", chat_id
       res.as_bool if res
     end
 
-    def get_chat_administrators(chat_id : Int32 | String)
+    def get_chat_administrators(chat_id : Int | String)
       res = def_request "getChatAdministrators", chat_id
       res = res.not_nil!
       admins = Array(ChatMember).new
@@ -425,13 +425,13 @@ module TelegramBot
       admins
     end
 
-    def get_chat_member(chat_id : Int32 | String,
+    def get_chat_member(chat_id : Int | String,
                         user_id : Int32)
       res = def_request "getChatMember", chat_id, user_id
       ChatMember.from_json res.not_nil!.to_json
     end
 
-    def get_chat_members_count(chat_id : Int32 | String)
+    def get_chat_members_count(chat_id : Int | String)
       res = def_request "getChatMembersCount", chat_id
       res.as_i if res
     end
@@ -445,7 +445,7 @@ module TelegramBot
       res.as_bool if res
     end
 
-    def edit_message_text(chat_id : Int32 | String | Nil = nil,
+    def edit_message_text(chat_id : Int | String | Nil = nil,
                           message_id : Int32? = nil,
                           inline_message_id : String? = nil,
                           text : String? = nil,
@@ -461,7 +461,7 @@ module TelegramBot
       end
     end
 
-    def edit_message_caption(chat_id : Int32 | String | Nil = nil,
+    def edit_message_caption(chat_id : Int | String | Nil = nil,
                              message_id : Int32? = nil,
                              inline_message_id : String? = nil,
                              caption : String? = nil,
@@ -475,7 +475,7 @@ module TelegramBot
       end
     end
 
-    def edit_message_reply_markup(chat_id : Int32 | String | Nil = nil,
+    def edit_message_reply_markup(chat_id : Int | String | Nil = nil,
                                   message_id : Int32? = nil,
                                   inline_message_id : String? = nil,
                                   reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
@@ -488,7 +488,7 @@ module TelegramBot
       end
     end
 
-    def delete_message(char_id : Int32 | String,
+    def delete_message(char_id : Int | String,
                        message_id : Int32) : Message | Bool | Nil
       res = def_request "deleteMessage", chat_id, message_id
       if res == "True"
@@ -545,7 +545,7 @@ module TelegramBot
     # Games
     #
 
-    def send_game(chat_id : Int32 | String,
+    def send_game(chat_id : Int | String,
                   game_short_name : String,
                   disable_notification : Bool? = nil,
                   reply_to_message_id : Int32? = nil,
@@ -559,7 +559,7 @@ module TelegramBot
                        score : Int32,
                        force : Bool? = nil,
                        disable_edit_message : Bool? = nil,
-                       chat_id : Int32 | String | Nil = nil,
+                       chat_id : Int | String | Nil = nil,
                        message_id : Int32? = nil,
                        inline_message_id : String? = nil) : Message | Bool | Nil
       res = def_request "setGameScore", user_id, score, force, disable_edit_message, chat_id, message_id, inline_message_id
@@ -571,7 +571,7 @@ module TelegramBot
     end
 
     def get_game_high_scores(user_id : Int32,
-                             chat_id : Int32 | String | Nil = nil,
+                             chat_id : Int | String | Nil = nil,
                              message_id : Int32? = nil,
                              inline_message_id : String? = nil) : Array(GameHighScore)
       res = def_request "getGameHighScores", user_id, chat_id, message_id, inline_message_id
@@ -585,7 +585,7 @@ module TelegramBot
     # Payments
     #
 
-    def send_invoice(chat_id : Int32,
+    def send_invoice(chat_id : Int,
                      tilte : String,
                      description : String,
                      payload : String,
