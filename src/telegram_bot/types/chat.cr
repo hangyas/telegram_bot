@@ -3,7 +3,7 @@ require "json"
 module TelegramBot
   class Chat
     JSON.mapping({
-      id:         Int32,
+      id:         Int64,
       type:       String,
       title:      {type: String, nilable: true},
       username:   {type: String, nilable: true},
