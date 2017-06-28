@@ -9,7 +9,7 @@ module TelegramBot
       title:                 String,
       voice_duration:        {type: Int32, nilable: true},
       reply_markup:          {type: InlineKeyboardMarkup, nilable: true},
-      input_message_content: InputMessageContent,
+      input_message_content: {type: InputMessageContent, nilable: true},
     }
 
     JSON.mapping({{FIELDS}})
