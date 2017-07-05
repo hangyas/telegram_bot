@@ -39,9 +39,9 @@ module TelegramBot
       raise "inline_query handler is not implemented"
     end
 
-    # handle choosen inlien query
-    def handle(choosen_inline_result : ChoosenInlineResult)
-      raise "choosen_inline_result handler is not implemented"
+    # handle chosen inlien query
+    def handle(chosen_inline_result : ChosenInlineResult)
+      raise "chosen_inline_result handler is not implemented"
     end
 
     # handle callback query
@@ -107,9 +107,9 @@ module TelegramBot
       elsif query = u.inline_query
         return if !allowed_user?(query)
         handle query
-      elsif choosen = u.choosen_inline_result
-        return if !allowed_user?(choosen)
-        handle choosen
+      elsif chosen = u.chosen_inline_result
+        return if !allowed_user?(chosen)
+        handle chosen
       elsif callback_query = u.callback_query
         return if !allowed_user?(callback_query)
         handle callback_query

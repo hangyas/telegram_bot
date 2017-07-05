@@ -53,7 +53,7 @@ def handle(message : Message)
 
 def handle(inline_query : InlineQuery)
 
-def handle(choosen_inline_result : ChoosenInlineResult)
+def handle(chosen_inline_result : ChosenInlineResult)
 
 def handle(callback_query : CallbackQuery)
 
