@@ -6,7 +6,7 @@ module TelegramBot
     FIELDS = {
       phone_number: String,
       first_name:   String,
-      last_name:    {type: String, nillable: true},
+      last_name:    {type: String, nilable: true},
     }
     JSON.mapping({{FIELDS}})
     initializer_for({{FIELDS}})
