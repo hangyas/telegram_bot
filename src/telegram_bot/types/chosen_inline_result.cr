@@ -1,7 +1,7 @@
 require "json"
 
 module TelegramBot
-  class ChoosenInlineResult
+  class ChosenInlineResult
     JSON.mapping({
       result_id:         String,
       from:              User,
