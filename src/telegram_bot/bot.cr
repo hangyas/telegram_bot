@@ -396,14 +396,75 @@ module TelegramBot
     end
 
     def kick_chat_member(chat_id : Int | String,
-                         user_id : Int32)
-      res = def_request "kickChatMember", chat_id, user_id
+                         user_id : Int,
+                         until_date : Int? = nil)
+      res = def_request "kickChatMember", chat_id, user_id, until_date
       res.as_bool if res
     end
 
     def unban_chat_member(chat_id : Int | String,
                           user_id : Int32)
       res = def_request "unbanChatMember", chat_id, user_id
+      res.as_bool if res
+    end
+
+    def restrict_chat_member(chat_id : Int | String,
+                             user_id : Int,
+                             until_date : Int? = nil,
+                             can_send_messages : Bool? = nil,
+                             can_send_media_messages : Bool? = nil,
+                             can_send_other_messages : Bool? = nil,
+                             can_add_web_page_previews : Bool? = nil)
+      res = def_request "restrictChatMember", chat_id, user_id, until_date, can_send_messages, can_send_media_messages, can_send_other_messages, can_add_web_page_previews
+      res.as_bool if res
+    end
+
+    def promote_chat_member(chat_id : Int | String,
+                            user_id : Int,
+                            can_change_info : Bool? = nil,
+                            can_post_messages : Bool? = nil,
+                            can_edit_messages : Bool? = nil,
+                            can_delete_messages : Bool? = nil,
+                            can_invite_users : Bool? = nil,
+                            can_restrict_members : Bool? = nil,
+                            can_pin_messages : Bool? = nil,
+                            can_promote_members : Bool? = nil)
+      res = def_request "promoteChatMember", chat_id, user_id, can_change_info, can_post_messages, can_edit_messages, can_delete_messages, can_invite_users, can_restrict_members, can_pin_messages, can_promote_members
+      res.as_bool if res
+    end
+
+    def export_chat_invite_link(chat_id : Int | String)
+      res = def_request "exportChatInviteLink", chat_id
+      res if res
+    end
+
+    def set_chat_photo(chat_id : Int | String, photo : ::File)
+      res = def_request "setChatPhoto", chat_id, photo
+      res.as_bool if res
+    end
+
+    def delete_chat_photo(chat_id : Int | String)
+      res = def_request "deleteChatPhoto", chat_id
+      res.as_bool if res
+    end
+
+    def set_chat_title(chat_id : Int | String, title : String)
+      res = def_request "setChatTitle", chat_id, title
+      res.as_bool if res
+    end
+
+    def set_chat_description(chat_id : Int | String, description : String)
+      res = def_request "setChatDescription", chat_id, description
+      res.as_bool if res
+    end
+
+    def pin_chat_message(chat_id : Int | String, message_id : Int, disable_notification : Bool? = nil)
+      res = def_request "pinChatMessage", chat_id, message_id, disable_notification
+      res.as_bool if res
+    end
+
+    def unpin_chat_message(chat_id : Int | String)
+      res = def_request "unpinChatMessage", chat_id
       res.as_bool if res
     end
 
