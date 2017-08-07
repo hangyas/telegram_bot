@@ -1,16 +1,21 @@
 # TelegramBot
 
-[Telegram Bot API](https://core.telegram.org/bots/api) wrapper for Crystal
+[Telegram Bot API](https://core.telegram.org/bots/api) (3.2) wrapper for Crystal
 
 ## Current features
 
- - [x] all messages type
- - [x] command handler
+ - [x] basic message types
+ - [x] stickers
+ - [x] inline mode
+ - [x] payments
+ - [x] games
+
  - [x] long polling
- - [x] inline queries
+ - [x] webhooks
+
+
  - [x] white & black lists
- - [x] updates via webhooks
- - [ ] async requests
+ - [x] command handler
 
 ## Usage
 
