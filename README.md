@@ -4,16 +4,20 @@
 
 ## Current features
 
- - [x] basic message types
- - [x] stickers
- - [x] inline mode
- - [x] payments
- - [x] games
+api methods and types:
+- [x] basic message types
+- [x] stickers
+- [x] inline mode
+- [x] payments
+- [x] games
 
+
+getting updates:
  - [x] long polling
  - [x] webhooks
 
 
+additional features:
  - [x] white & black lists
  - [x] command handler
 
