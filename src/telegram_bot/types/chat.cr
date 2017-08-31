@@ -13,6 +13,7 @@ module TelegramBot
       all_members_are_administrators: {type: Bool, nilable: true},
       description:                    {type: String, nilable: true},
       invite_link:                    {type: String, nilable: true},
+      pinned_message:                 {type: Message, nilable: true},
     })
   end
 end
