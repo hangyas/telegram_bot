@@ -103,7 +103,14 @@ module TelegramBot
     def handle_update(u)
       if msg = u.message
         return if !allowed_user?(msg)
-        handle msg
+        if @cmd_handler_included && is_command?(msg)
+          res = handle_command msg
+          if !res
+            handle msg
+          end
+        else
+          handle msg
+        end
       elsif query = u.inline_query
         return if !allowed_user?(query)
         handle query
@@ -129,6 +136,10 @@ module TelegramBot
 
     protected def logger : Logger
       @logger ||= Logger.new(STDOUT).tap { |l| l.level = Logger::DEBUG }
+    end
+
+    private def is_command?(msg) : Bool
+      !!(msg.text && msg.text.not_nil![0] == '/')
     end
 
     private def allowed_user?(msg) : Bool

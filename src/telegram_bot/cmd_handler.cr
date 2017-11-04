@@ -2,6 +2,7 @@ module TelegramBot
   module CmdHandler
     macro included
       @commands = {} of String => (TelegramBot::Message ->) | (TelegramBot::Message, Array(String) ->)
+      @cmd_handler_included = true
     end
 
     def /(command : String, &block : Message ->)
@@ -33,7 +34,7 @@ module TelegramBot
       end
     end
 
-    def handle(message : Message)
+    private def handle_command(message : Message)
       if txt = message.text || message.caption
         if txt[0] == '/'
           a = txt.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, "").split(' ')
@@ -51,8 +52,10 @@ module TelegramBot
           end
 
           call cmd, message, a[1..-1]
+          return true
         end
       end
+      false
     end
   end
 end
