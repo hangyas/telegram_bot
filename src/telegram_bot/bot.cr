@@ -552,7 +552,7 @@ module TelegramBot
     def delete_message(chat_id : Int | String,
                        message_id : Int32) : Message | Bool | Nil
       res = def_request "deleteMessage", chat_id, message_id
-      if res == "True"
+      if res == true
         return true
       else
         Message.from_json res.to_json if res
