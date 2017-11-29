@@ -12,7 +12,7 @@ module TelegramBot
     end
 
     def post_form(method : String, params : Hash)
-      HTTP::Client.post_form(url_for(method), params)
+      HTTP::Client.post(url_for(method), form: params)
     end
 
     def post_multipart(method : String, params)
