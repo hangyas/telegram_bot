@@ -361,11 +361,11 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
-    def edit_message_live_location(chat_id : Int | String | Nil = nil,
+    def edit_message_live_location(latitude : Float,
+                                   longitude : Float,
+                                   chat_id : Int | String | Nil = nil,
                                    message_id : Int32? = nil,
                                    inline_message_id : String? = nil,
-                                   latitude : Float,
-                                   longitude : Float,
                                    reply_markup : ReplyMarkup? = nil)
         res = def_request "editMessageLiveLocation", chat_id, message_id, inline_message_id, latitude, longitude, reply_markup
         Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
