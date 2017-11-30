@@ -17,6 +17,7 @@ module TelegramBot
       author_signature:        {type: String, nilable: true},
       text:                    {type: String, nilable: true},
       entities:                {type: Array(MessageEntity), nilable: true},
+      caption_entities:        {type: Array(MessageEntity), nilable: true},
       audio:                   {type: Audio, nilable: true},
       document:                {type: Document, nilable: true},
       photo:                   {type: Array(PhotoSize), nilable: true},

@@ -353,11 +353,30 @@ module TelegramBot
     def send_location(chat_id : Int | String,
                       latitude : Float,
                       longitude : Float,
+                      live_period : Int32? = nil,
                       disable_notification : Bool? = nil,
                       reply_to_message_id : Int32? = nil,
                       reply_markup : ReplyMarkup = nil) : Message?
-      res = def_request "sendLocation", chat_id, latitude, longitude, disable_notification, reply_to_message_id, reply_markup
+      res = def_request "sendLocation", chat_id, latitude, longitude, live_period, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
+    end
+
+    def edit_message_live_location(chat_id : Int | String | Nil = nil,
+                                   message_id : Int32? = nil,
+                                   inline_message_id : String? = nil,
+                                   latitude : Float,
+                                   longitude : Float,
+                                   reply_markup : ReplyMarkup? = nil)
+        res = def_request "editMessageLiveLocation", chat_id, message_id, inline_message_id, latitude, longitude, reply_markup
+        Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+    end
+
+    def stop_message_live_location(chat_id : Int | String | Nil = nil,
+                                   message_id : Int32? = nil,
+                                   inline_message_id : String? = nil,
+                                   reply_markup : ReplyMarkup? = nil)
+        res = def_request "stopMessageLiveLocation", chat_id, message_id, inline_message_id, reply_markup
+        Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
     end
 
     def send_venue(chat_id : Int | String,
@@ -368,7 +387,7 @@ module TelegramBot
                    forsquare_id : String? = nil,
                    disable_notification : Bool? = nil,
                    reply_to_message_id : Int32? = nil,
-                   reply_markup : ReplyMarkup = nil) : Message?
+                   reply_markup : ReplyMarkup? = nil) : Message?
       res = def_request "sendVenue", chat_id, latitude, longitude, title, address, forsquare_id, disable_notification, reply_to_message_id, reply_markup
       Message.from_json res.to_json if res
     end
@@ -495,6 +514,16 @@ module TelegramBot
     def get_chat_members_count(chat_id : Int | String)
       res = def_request "getChatMembersCount", chat_id
       res.as_i if res
+    end
+
+    def set_chat_sticker_set(chat_id : Int | String, sticker_set_name : String)
+      res = def_request "setChatStickerSet", chat_id, sticker_set_name
+      res.as_bool if res
+    end
+
+    def delete_chat_sticker_set(chat_id : Int | String)
+      res = def_request "deleteChatStickerSet", chat_id
+      res.as_bool if res
     end
 
     def answer_callback_query(callback_query_id : String,
