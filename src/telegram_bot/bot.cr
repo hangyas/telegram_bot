@@ -350,6 +350,14 @@ module TelegramBot
       Message.from_json res.to_json if res
     end
 
+    def send_media_group(chat_id : Int | String,
+                         media : Array(InputMedia),
+                         disable_notification : Bool? = nil,
+                         reply_to_message_id : Int32? = nil) : Message?
+      res = def_request "sendMediaGroup", chat_id, media, disable_notification, reply_to_message_id
+      Message.from_json res.to_json if res
+    end
+
     def send_location(chat_id : Int | String,
                       latitude : Float,
                       longitude : Float,
@@ -367,16 +375,16 @@ module TelegramBot
                                    message_id : Int32? = nil,
                                    inline_message_id : String? = nil,
                                    reply_markup : ReplyMarkup? = nil)
-        res = def_request "editMessageLiveLocation", chat_id, message_id, inline_message_id, latitude, longitude, reply_markup
-        Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+      res = def_request "editMessageLiveLocation", chat_id, message_id, inline_message_id, latitude, longitude, reply_markup
+      Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
     end
 
     def stop_message_live_location(chat_id : Int | String | Nil = nil,
                                    message_id : Int32? = nil,
                                    inline_message_id : String? = nil,
                                    reply_markup : ReplyMarkup? = nil)
-        res = def_request "stopMessageLiveLocation", chat_id, message_id, inline_message_id, reply_markup
-        Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+      res = def_request "stopMessageLiveLocation", chat_id, message_id, inline_message_id, reply_markup
+      Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
     end
 
     def send_venue(chat_id : Int | String,
@@ -490,6 +498,18 @@ module TelegramBot
     def get_chat(chat_id : Int | String)
       res = def_request "getChat", chat_id
       Chat.from_json res.not_nil!.to_json
+    end
+
+    def pin_chat_message(chat_id : Int | String,
+                         message_id : Int32,
+                         disable_notification : Bool?)
+      res = def_request "pinChatMessage", chat_id, message_id, disable_notification
+      res.as_bool if res
+    end
+
+    def unpin_chat_message(chat_id : Int | String)
+      res = def_request "unpinChatMessage", chat_id
+      res.as_bool if res
     end
 
     def leave_chat(chat_id : Int | String)
@@ -683,6 +703,7 @@ module TelegramBot
                      start_parameter : String,
                      currency : String,
                      prices : Array(LabeledPrice),
+                     provider_data : String? = nil,
                      photo_url : String? = nil,
                      photo_size : Int32? = nil,
                      photo_width : Int32? = nil,
