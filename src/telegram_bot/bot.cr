@@ -376,7 +376,13 @@ module TelegramBot
                                    inline_message_id : String? = nil,
                                    reply_markup : ReplyMarkup? = nil)
       res = def_request "editMessageLiveLocation", chat_id, message_id, inline_message_id, latitude, longitude, reply_markup
-      Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+      if res
+        if res.as_bool?
+          return true
+        else
+          return Message.from_json res.to_json
+        end
+      end
     end
 
     def stop_message_live_location(chat_id : Int | String | Nil = nil,
@@ -384,7 +390,13 @@ module TelegramBot
                                    inline_message_id : String? = nil,
                                    reply_markup : ReplyMarkup? = nil)
       res = def_request "stopMessageLiveLocation", chat_id, message_id, inline_message_id, reply_markup
-      Message.from_json res.to_json if res # On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+      if res
+        if res.as_bool?
+          return true
+        else
+          return Message.from_json res.to_json
+        end
+      end
     end
 
     def send_venue(chat_id : Int | String,
@@ -412,7 +424,8 @@ module TelegramBot
 
     def send_chat_action(chat_id : Int | String,
                          action : String)
-      def_request "sendChatAction", chat_id, action
+      res = def_request "sendChatAction", chat_id, action
+      res.as_bool if res
     end
 
     def get_user_profile_photos(user_id : Int32,
@@ -564,10 +577,12 @@ module TelegramBot
                           reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
       reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageText", chat_id, message_id, inline_message_id, text, parse_mode, disable_web_page_preview, reply_markup
-      if res == "True"
-        return true
-      else
-        Message.from_json res.to_json if res
+      if res
+        if res.as_bool?
+          return true
+        else
+          return Message.from_json res.to_json
+        end
       end
     end
 
@@ -578,10 +593,12 @@ module TelegramBot
                              reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
       reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageCaption", chat_id, message_id, inline_message_id, caption, reply_markup
-      if res == "True"
-        return true
-      else
-        Message.from_json res.to_json if res
+      if res
+        if res.as_bool?
+          return true
+        else
+          return Message.from_json res.to_json
+        end
       end
     end
 
@@ -591,20 +608,24 @@ module TelegramBot
                                   reply_markup : InlineKeyboardMarkup? = nil) : Message | Bool | Nil
       reply_markup = reply_markup.try(&.to_json)
       res = def_request "editMessageReplyMarkup", chat_id, message_id, inline_message_id, reply_markup
-      if res == "True"
-        return true
-      else
-        Message.from_json res.to_json if res
+      if res
+        if res.as_bool?
+          return true
+        else
+          return Message.from_json res.to_json
+        end
       end
     end
 
     def delete_message(chat_id : Int | String,
                        message_id : Int32) : Message | Bool | Nil
       res = def_request "deleteMessage", chat_id, message_id
-      if res == "True"
-        return true
-      else
-        Message.from_json res.to_json if res
+      if res
+        if res.as_bool?
+          return true
+        else
+          return Message.from_json res.to_json
+        end
       end
     end
 
@@ -673,10 +694,12 @@ module TelegramBot
                        message_id : Int32? = nil,
                        inline_message_id : String? = nil) : Message | Bool | Nil
       res = def_request "setGameScore", user_id, score, force, disable_edit_message, chat_id, message_id, inline_message_id
-      if res == "True"
-        return true
-      else
-        Message.from_json res.to_json if res
+      if res
+        if res.as_bool?
+          return true
+        else
+          return Message.from_json res.to_json
+        end
       end
     end
 
@@ -726,22 +749,14 @@ module TelegramBot
                               shipping_option : Array(ShippingOption)? = nil,
                               error_message : String? = nil) : Bool | Message | Nil
       res = def_request "answerShippingQuery", shipping_query_id, ok, shipping_option, error_message
-      if res == "True"
-        return true
-      else
-        Message.from_json res.to_json if res
-      end
+      res.as_bool if res
     end
 
     def answer_pre_checkout_query(pre_checkout_query_id : String,
                                   ok : Bool,
                                   error_message : String? = nil) : Bool | Message | Nil
       res = def_request "answerPreCheckoutQuery", pre_checkout_query_id, ok, error_message
-      if res == "True"
-        return true
-      else
-        Message.from_json res.to_json if res
-      end
+      res.as_bool if res
     end
 
     #
