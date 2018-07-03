@@ -78,7 +78,7 @@ module TelegramBot
     end
 
     def serve(bind_address : String = "127.0.0.1", bind_port : Int32 = 80, ssl_certificate_path : String | Nil = nil, ssl_key_path : String | Nil = nil)
-      server = HTTP::Server.new(bind_address, bind_port) do |context|
+      server = HTTP::Server.new do |context|
         begin
           Fiber.current.telegram_bot_server_http_context = context
           handle_update(TelegramBot::Update.from_json(context.request.body.not_nil!))
@@ -88,6 +88,7 @@ module TelegramBot
           Fiber.current.telegram_bot_server_http_context = nil
         end
       end
+      server.bind_tcp(bind_address, bind_port)
 
       if ssl_certificate_path && ssl_key_path
         ssl = OpenSSL::SSL::Context::Server.new
