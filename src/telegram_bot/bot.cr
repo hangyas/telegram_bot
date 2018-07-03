@@ -226,7 +226,7 @@ module TelegramBot
       data = request("getUpdates", force_http: true, params: {"offset" => offset, "limit" => limit, "timeout" => timeout, "allowed_updates" => allowed_updates}).not_nil!
 
       r = [] of Update
-      data.each do |json|
+      data.as_a.each do |json|
         r << Update.from_json(json.to_json)
       end
 
