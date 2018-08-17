@@ -533,7 +533,7 @@ module TelegramBot
 
     def get_chat_administrators(chat_id : Int | String)
       res = def_request "getChatAdministrators", chat_id
-      res = res.not_nil!
+      res = res.not_nil!.as_a
       admins = Array(ChatMember).new
       res.each { |m| admins << ChatMember.from_json(m.to_json) }
       admins
