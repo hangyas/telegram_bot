@@ -709,7 +709,7 @@ module TelegramBot
                              message_id : Int32? = nil,
                              inline_message_id : String? = nil) : Array(GameHighScore)
       res = def_request "getGameHighScores", user_id, chat_id, message_id, inline_message_id
-      res = res.not_nil!
+      res = res.not_nil!.as_a
       r = Array(GameHighScore).new
       res.each { |score| r << GameHighScore.from_json(score.to_json) }
       return r
