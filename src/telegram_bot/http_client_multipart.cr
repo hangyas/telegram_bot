@@ -1,5 +1,4 @@
 require "http/client"
-require "tempfile"
 
 class HTTP::Client
   def self.post_multipart(url : String | URI, parts : MultipartBody | Hash, headers : HTTP::Headers | Nil = nil) : HTTP::Client::Response
@@ -64,7 +63,7 @@ class HTTP::Client
       @body += "\r\n" + content + "\r\n"
     end
 
-    def add_file(name : String, file : ::File | ::Tempfile, filename : String? = nil, mime_type : String = "application/octet-stream")
+    def add_file(name : String, file : ::File, filename : String? = nil, mime_type : String = "application/octet-stream")
       content = File.read(file.path)
       add_file(name, content, filename || file.path, mime_type)
     end
