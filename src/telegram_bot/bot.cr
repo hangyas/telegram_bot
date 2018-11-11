@@ -88,16 +88,18 @@ module TelegramBot
           Fiber.current.telegram_bot_server_http_context = nil
         end
       end
-      server.bind_tcp(bind_address, bind_port)
 
       if ssl_certificate_path && ssl_key_path
-        ssl = OpenSSL::SSL::Context::Server.new
-        ssl.certificate_chain = ssl_certificate_path.not_nil!
-        ssl.private_key = ssl_key_path.not_nil!
-        server.tls = ssl
+        context = OpenSSL::SSL::Context::Server.new
+        context.certificate_chain = ssl_certificate_path
+        context.private_key = ssl_key_path
+        server.bind_tls(bind_address, bind_port, context)
+        logger.info("Listening for Telegram requests in #{bind_address}:#{bind_port} with tls")
+      else
+        server.bind_tcp(bind_address, bind_port)
+        logger.info("Listening for Telegram requests in #{bind_address}:#{bind_port}")
       end
 
-      logger.info("Listening for Telegram requests in #{bind_address}:#{bind_port}#{" with tls" if server.tls}")
       server.listen
     end
 
