@@ -35,23 +35,21 @@ module TelegramBot
 
     def handle(message : Message)
       if txt = message.text || message.caption
-        if txt[0] == '/'
-          a = txt.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, "").split(' ')
-          cmd = a[0][1..-1]
+        return unless txt.stats_with? '/'
+  
+        a = txt.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, "").split(' ')
+        cmd = a[0][1..-1]
 
-          if cmd.includes? '@'
-            parts = cmd.split('@')
+        if cmd.includes? '@'
+          parts = cmd.split('@')
 
-            if parts[1].upcase != @name.upcase
-              # not for us
-              return
-            end
+          # not for us
+          return if parts[1].upcase != @name.upcase
 
-            cmd = parts[0]
-          end
-
-          call cmd, message, a[1..-1]
+          cmd = parts[0]
         end
+
+        call cmd, message, a[1..-1]
       end
     end
   end
