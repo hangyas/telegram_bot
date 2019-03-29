@@ -35,8 +35,8 @@ module TelegramBot
 
     def handle(message : Message)
       if txt = message.text || message.caption
-        return unless txt.stats_with? '/'
-  
+        return unless txt.starts_with? '/'
+
         a = txt.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, "").split(' ')
         cmd = a[0][1..-1]
 
