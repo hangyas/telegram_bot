@@ -15,7 +15,6 @@ module TelegramBot
       thumb_width:           {type: Int32, nilable: true},
       thumb_height:          {type: Int32, nilable: true},
     }
-    
 
     JSON.mapping({{FIELDS}})
     initializer_for({{FIELDS}})
