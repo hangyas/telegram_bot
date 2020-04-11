@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: crystallang/crystal:0.34.0
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: crystal spec
