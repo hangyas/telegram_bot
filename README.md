@@ -1,3 +1,15 @@
+❌❌❌❌❌❌❌❌
+
+# Deprecation Notice
+
+Please consider using [tourmaline](https://github.com/protoncr/tourmaline) instead
+
+I'll try to keep this library compatible with the future versions of Crystal, but tourmaline is a well designed and maintained library which is superior in every way while sharing the same basics, thus I don't see any value in implementing the same improvements and fragmenting the community
+
+Bug fixes are still welcomed
+
+❌❌❌❌❌❌❌❌
+
 # TelegramBot
 
 [Telegram Bot API](https://core.telegram.org/bots/api) (3.2) wrapper for Crystal
