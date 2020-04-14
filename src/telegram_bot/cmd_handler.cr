@@ -22,7 +22,7 @@ module TelegramBot
 
     def call(cmd : String, message : Message, params : Array(String))
       if proc = @commands[cmd]?
-        logger.info("handle /#{cmd}")
+        Bot::Log.info { "handle /#{cmd}" }
         if proc.is_a?(Message ->)
           proc.call(message)
         else

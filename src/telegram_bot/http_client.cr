@@ -1,9 +1,7 @@
 require "http/client"
 
 module TelegramBot
-
   class HttpClient
-
     def initialize(@token : String)
     end
 
@@ -22,7 +20,5 @@ module TelegramBot
     protected def url_for(method) : String
       "https://api.telegram.org/bot#{@token}/#{method}"
     end
-
   end
-
 end

@@ -1,7 +1,7 @@
 require "http/client"
 require "http/server"
 require "json"
-require "logger"
+require "log"
 require "./fiber.cr"
 require "./helper.cr"
 require "./types/inline/*"
@@ -14,7 +14,7 @@ require "./api_exception.cr"
 
 module TelegramBot
   abstract class Bot
-    @logger : Logger?
+    Log = ::Log.for(self)
 
     # handle messages
     def handle(message : Message)
@@ -61,19 +61,35 @@ module TelegramBot
                    @updates_timeout : Int32? = nil,
                    @allowed_updates : Array(String)? = nil)
       @nextoffset = 0
+      @running = false
     end
 
     # run long polling in a loop and call handlers for messages
     def polling
-      loop do
+      Log.info { "#{self.class} is ready to lead" }
+      setup_trap_signal
+      @running = true
+      while @running
         begin
           updates = get_updates
           updates.each do |u|
             spawn handle_update(u)
           end
         rescue ex
-          logger.error(ex)
+          Log.error { ex }
         end
+      end
+    end
+
+    def stop
+      Log.info { "#{self.class} is going to take a rest" }
+      @running = false
+    end
+
+    private def setup_trap_signal
+      Signal::INT.trap do
+        stop
+        exit
       end
     end
 
@@ -83,7 +99,7 @@ module TelegramBot
           Fiber.current.telegram_bot_server_http_context = context
           handle_update(TelegramBot::Update.from_json(context.request.body.not_nil!))
         rescue ex
-          logger.error(ex)
+          Log.error { ex }
         ensure
           Fiber.current.telegram_bot_server_http_context = nil
         end
@@ -94,10 +110,10 @@ module TelegramBot
         context.certificate_chain = ssl_certificate_path
         context.private_key = ssl_key_path
         server.bind_tls(bind_address, bind_port, context)
-        logger.info("Listening for Telegram requests in #{bind_address}:#{bind_port} with tls")
+        Log.info { "Listening for Telegram requests in #{bind_address}:#{bind_port} with tls" }
       else
         server.bind_tcp(bind_address, bind_port)
-        logger.info("Listening for Telegram requests in #{bind_address}:#{bind_port}")
+        Log.info { "Listening for Telegram requests in #{bind_address}:#{bind_port}" }
       end
 
       server.listen
@@ -127,11 +143,7 @@ module TelegramBot
         handle_edited_channel_post post
       end
     rescue ex
-      logger.error("update was not handled because: #{ex.message}")
-    end
-
-    protected def logger : Logger
-      @logger ||= Logger.new(STDOUT).tap { |l| l.level = Logger::DEBUG }
+      Log.error { "update was not handled because: #{ex.message}" }
     end
 
     private def allowed_user?(msg) : Bool
@@ -149,7 +161,7 @@ module TelegramBot
         if username = from.username
           if blacklist.includes?(username)
             # on the blacklist
-            logger.info("#{username} blocked because he/she is on the blacklist")
+            Log.info { "#{username} blocked because he/she is on the blacklist" }
             return false
           else
             # not on the blacklist
@@ -168,12 +180,12 @@ module TelegramBot
             return true
           else
             # not on the whitelist
-            logger.info("#{username} blocked because he/she is not on the whitelist")
+            Log.info { "#{username} blocked because he/she is not on the whitelist" }
             return false
           end
         else
           # doesn't have username at all
-          logger.info("user without username is blocked because whitelist is set")
+          Log.info { "user without username is blocked because whitelist is set" }
           return false
         end
       end
@@ -665,7 +677,7 @@ module TelegramBot
     def set_webhook(url : String, certificate : ::File | String | Nil = nil, max_connections : Int32? = nil, allowed_updates : Array(String)? = @allowed_updates)
       multipart_params = HTTP::Client::MultipartBody.new({"url" => url, "max_connections" => max_connections, "allowed_updates" => allowed_updates})
       multipart_params.add_file("certificate", certificate, filename: "cert.pem") if certificate
-      logger.info("Setting webhook to '#{url}'#{" with certificate" if certificate}")
+      Log.info { "Setting webhook to '#{url}'#{" with certificate" if certificate}" }
       response = HttpClient.new(@token).post_multipart "setWebhook", multipart_params
       handle_http_response(response)
     end

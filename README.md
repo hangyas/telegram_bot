@@ -5,21 +5,22 @@
 ## Current features
 
 api methods and types:
+
 - [x] basic message types
 - [x] stickers
 - [x] inline mode
 - [x] payments
 - [x] games
 
-
 getting updates:
- - [x] long polling
- - [x] webhooks
 
+- [x] long polling
+- [x] webhooks
 
 additional features:
- - [x] white & black lists
- - [x] command handler
+
+- [x] white & black lists
+- [x] command handler
 
 ## Usage
 
@@ -48,6 +49,16 @@ class MyBot < TelegramBot::Bot
     end
   end
 end
+
+my_bot = MyBot.new
+my_bot.polling
+```
+
+### Logging
+
+```crystal
+MyBot::Log.level = :debug
+MyBot::Log.backend = ::Log::IOBackend.new
 
 my_bot = MyBot.new
 my_bot.polling
@@ -135,7 +146,6 @@ However it's not part of the API you can set black or white lists in the bot's c
 
 `blacklist`: if user is present on the list the message won't be handled
 
-
 ## Installation
 
 Add this to your application's `shard.yml`:
@@ -145,7 +155,6 @@ dependencies:
   telegram_bot:
     github: hangyas/telegram_bot
 ```
-
 
 ## Contributing
 

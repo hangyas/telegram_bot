@@ -1,7 +1,5 @@
 module TelegramBot
-
   class ResponseClient
-
     def initialize(@response : HTTP::Server::Response)
     end
 
@@ -28,7 +26,5 @@ module TelegramBot
       @response.close
       nil
     end
-
   end
-
 end
